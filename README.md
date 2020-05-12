@@ -1,6 +1,6 @@
 <a href="https://covid19datahub.io"><img src="https://storage.covid19datahub.io/img/logo.svg" align="right" height="128"/></a>
 
-# R Interface to the COVID-19 Data Hub
+# R Interface to COVID-19 Data Hub
 
 ![](https://www.r-pkg.org/badges/version/COVID19) ![](https://www.r-pkg.org/badges/last-release/COVID19) ![](https://cranlogs.r-pkg.org/badges/grand-total/COVID19) [![](https://img.shields.io/badge/doi-10.13140/RG.2.2.11649.81763-orange.svg)](https://doi.org/10.13140/RG.2.2.11649.81763)
 
