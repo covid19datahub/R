@@ -1,6 +1,11 @@
 #' COVID-19 Data Hub
 #'
-#' Unified datasets for a better understanding of COVID-19.
+#' Unified dataset for a better understanding of COVID-19. Collects COVID-19 data across several governmental sources. 
+#' Includes policy measures from \href{www.bsg.ox.ac.uk/covidtracker}{Oxford COVID-19 Government Response Tracker}. 
+#' Extends the dataset with a simple interface to 
+#' \href{https://data.worldbank.org/}{World Bank Open Data}, 
+#' \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports}, 
+#' \href{https://www.apple.com/covid19/mobility}{Apple Mobility Reports}.
 #'
 #' @param country vector of country names or \href{https://github.com/covid19datahub/COVID19/blob/master/inst/extdata/db/ISO.csv}{ISO codes} (alpha-2, alpha-3 or numeric).
 #' @param level integer. Granularity level. 1: country-level data. 2: state-level data. 3: lower-level data.
@@ -12,7 +17,7 @@
 #' @param gmr url to the \href{https://www.google.com/covid19/mobility/}{Google Mobility Report} dataset. See details.
 #' @param amr url to the \href{https://www.apple.com/covid19/mobility}{Apple Mobility Report} dataset. See details.
 #' @param cache logical. Memory caching? Significantly improves performance on successive calls. Default \code{TRUE}.
-#' @param verbose logical. Print data sources? Default \code{TRUE}.
+#' @param verbose logical. Print data sources? Default \code{TRUE}. Data sources are stored in the \code{src} attribute. See examples.
 #'
 #' @details 
 #' If \code{raw=TRUE}, the raw data are cleaned by filling missing dates with \code{NA} values. 
@@ -28,6 +33,8 @@
 #' 
 #' The dataset can be extended with \href{https://www.apple.com/covid19/mobility}{Apple Mobility Reports} via the argument \code{amr}, the url to the Apple CSV file.
 #' At the time of writing, the CSV is available at https://covid19-static.cdn-apple.com/covid19-mobility-data/2008HotfixDev28/v2/en-us/applemobilitytrends-2020-05-15.csv
+#'
+#' Data sources are stored in the \code{src} attribute. See examples.
 #'
 #' @return Grouped \code{tibble} (\code{data.frame}). See the \href{https://covid19datahub.io/articles/doc/data.html}{dataset description}
 #'
@@ -52,7 +59,8 @@
 #' x   <- covid19(gmr = gmr)
 #' 
 #' # Merge with Apple Mobility Reports
-#' amr <- "https://covid19-static.cdn-apple.com/covid19-mobility-data/2008HotfixDev28/v2/en-us/applemobilitytrends-2020-05-15.csv"
+#' amr <- "https://covid19-static.cdn-apple.com/covid19-mobility-data/"
+#' amr <- paste0(amr, "2008HotfixDev28/v2/en-us/applemobilitytrends-2020-05-15.csv")
 #' x   <- covid19(amr = amr)
 #' 
 #' # Data sources

@@ -34,7 +34,7 @@ covid19(
 
 \item{vintage}{logical. Retrieve the snapshot of the dataset that was generated at the \code{end} date instead of using the latest version. Default \code{FALSE}.}
 
-\item{verbose}{logical. Print data sources? Default \code{TRUE}.}
+\item{verbose}{logical. Print data sources? Default \code{TRUE}. Data sources are stored in the \code{src} attribute. See examples.}
 
 \item{cache}{logical. Memory caching? Significantly improves performance on successive calls. Default \code{TRUE}.}
 
@@ -48,7 +48,12 @@ covid19(
 Grouped \code{tibble} (\code{data.frame}). See the \href{https://covid19datahub.io/articles/doc/data.html}{dataset description}
 }
 \description{
-Unified datasets for a better understanding of COVID-19.
+Unified dataset for a better understanding of COVID-19. Collects COVID-19 data across several governmental sources. 
+Includes policy measures from \href{www.bsg.ox.ac.uk/covidtracker}{Oxford COVID-19 Government Response Tracker}. 
+Extends the dataset with a simple interface to 
+\href{https://data.worldbank.org/}{World Bank Open Data}, 
+\href{https://www.google.com/covid19/mobility/}{Google Mobility Reports}, 
+\href{https://www.apple.com/covid19/mobility}{Apple Mobility Reports}.
 }
 \details{
 If \code{raw=TRUE}, the raw data are cleaned by filling missing dates with \code{NA} values. 
@@ -64,6 +69,8 @@ At the time of writing, the CSV is available at https://www.gstatic.com/covid19/
 
 The dataset can be extended with \href{https://www.apple.com/covid19/mobility}{Apple Mobility Reports} via the argument \code{amr}, the url to the Apple CSV file.
 At the time of writing, the CSV is available at https://covid19-static.cdn-apple.com/covid19-mobility-data/2008HotfixDev28/v2/en-us/applemobilitytrends-2020-05-15.csv
+
+Data sources are stored in the \code{src} attribute. See examples.
 }
 \note{
 We have invested a lot of time and effort in creating \href{https://covid19datahub.io}{COVID-19 Data Hub}, please:
@@ -98,7 +105,8 @@ gmr <- "https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv"
 x   <- covid19(gmr = gmr)
 
 # Merge with Apple Mobility Reports
-amr <- "https://covid19-static.cdn-apple.com/covid19-mobility-data/2008HotfixDev28/v2/en-us/applemobilitytrends-2020-05-15.csv"
+amr <- "https://covid19-static.cdn-apple.com/covid19-mobility-data/"
+amr <- paste0(amr, "2008HotfixDev28/v2/en-us/applemobilitytrends-2020-05-15.csv")
 x   <- covid19(amr = amr)
 
 # Data sources
