@@ -9,17 +9,25 @@
 #' @param vintage logical. Retrieve the snapshot of the dataset that was generated at the \code{end} date instead of using the latest version. Default \code{FALSE}.
 #' @param raw logical. Skip data cleaning? Default \code{FALSE}. See details.
 #' @param wb character vector of \href{https://data.worldbank.org}{World Bank} indicator codes. See details.
+#' @param gmr url to the \href{https://www.google.com/covid19/mobility/}{Google Mobility Report} dataset. See details.
+#' @param amr url to the \href{https://www.apple.com/covid19/mobility}{Apple Mobility Report} dataset. See details.
 #' @param cache logical. Memory caching? Significantly improves performance on successive calls. Default \code{TRUE}.
 #' @param verbose logical. Print data sources? Default \code{TRUE}.
 #'
 #' @details 
-#' The raw data are cleaned by filling missing dates with \code{NA} values. 
+#' If \code{raw=TRUE}, the raw data are cleaned by filling missing dates with \code{NA} values. 
 #' This ensures that all locations share the same grid of dates and no single day is skipped. 
 #' Then, \code{NA} values are replaced with the previous non-\code{NA} value or \code{0}.
 #' 
 #' The dataset can be extended with \href{https://data.worldbank.org}{World Bank Open Data} via the argument \code{wb}, a character vector of indicator codes.
 #' The codes can be found by inspecting the corresponding URL. For example, the code of the GDP indicator available at \url{https://data.worldbank.org/indicator/NY.GDP.MKTP.CD} is \code{NY.GDP.MKTP.CD}.
 #' The latest data available between the \code{start} and \code{end} date are downloaded.
+#'
+#' The dataset can be extended with \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports} via the argument \code{gmr}, the url to the Google CSV file.
+#' At the time of writing, the CSV is available at https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv
+#' 
+#' The dataset can be extended with \href{https://www.apple.com/covid19/mobility}{Apple Mobility Reports} via the argument \code{amr}, the url to the Apple CSV file.
+#' At the time of writing, the CSV is available at https://covid19-static.cdn-apple.com/covid19-mobility-data/2008HotfixDev28/v2/en-us/applemobilitytrends-2020-05-15.csv
 #'
 #' @return Grouped \code{tibble} (\code{data.frame}). See the \href{https://covid19datahub.io/articles/doc/data.html}{dataset description}
 #'
@@ -38,6 +46,14 @@
 #' # Merge with World Bank data
 #' wb <- c("gdp" = "NY.GDP.MKTP.CD", "hosp_beds" = "SH.MED.BEDS.ZS")
 #' x  <- covid19(wb = wb)
+#' 
+#' # Merge with Google Mobility Reports
+#' gmr <- "https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv"
+#' x   <- covid19(gmr = gmr)
+#' 
+#' # Merge with Apple Mobility Reports
+#' amr <- "https://covid19-static.cdn-apple.com/covid19-mobility-data/2008HotfixDev28/v2/en-us/applemobilitytrends-2020-05-15.csv"
+#' x   <- covid19(amr = amr)
 #' 
 #' # Data sources
 #' s <- attr(x, "src")
@@ -70,7 +86,9 @@ covid19 <- function(country = NULL,
                     vintage = FALSE,
                     verbose = TRUE,
                     cache   = TRUE,
-                    wb      = NULL){
+                    wb      = NULL,
+                    gmr     = NULL,
+                    amr     = NULL){
 
   # fallback
   if(!(level %in% 1:3))
@@ -80,7 +98,7 @@ covid19 <- function(country = NULL,
          3: admin area level 3")
 
   # cache
-  cachekey <- make.names(sprintf("covid19_%s_%s_%s_%s",paste0(country, collapse = "."), level, ifelse(vintage, end, 0), raw))
+  cachekey <- make.names(sprintf("covid19_%s_%s_%s_%s_%s_%s_%s",paste0(country, collapse = "."), level, ifelse(vintage, end, 0), raw, ifelse(is.null(wb),"",paste(wb, collapse = "")), ifelse(is.null(gmr),"",gmr), ifelse(is.null(amr),"",amr)))
   if(cache & exists(cachekey, envir = cachedata))
     return(get(cachekey, envir = cachedata) %>% dplyr::filter(date >= start & date <= end))
 
@@ -122,14 +140,7 @@ covid19 <- function(country = NULL,
   if(length(country <- toupper(country)) > 0){
     
     id <- iso_alpha_3 <- iso_alpha_2 <- iso_numeric <- administrative_area_level_1 <- NA
-    
-    x <- dplyr::filter(x, 
-      toupper(id) %in% country |
-      iso_alpha_3 %in% country |
-      iso_alpha_2 %in% country |
-      iso_numeric %in% country |
-      toupper(administrative_area_level_1) %in% country
-    )
+    x  <- dplyr::filter(x, toupper(id) %in% country | iso_alpha_3 %in% country | iso_alpha_2 %in% country | iso_numeric %in% country | toupper(administrative_area_level_1) %in% country)
     
   }
 
@@ -142,7 +153,15 @@ covid19 <- function(country = NULL,
   
   # world bank
   if(!is.null(wb))
-    x <- worldbank(x, wb, start = start, end = end)
+    x <- worldbank(x, indicator = wb, start = start, end = end)
+  
+  # google mobility
+  if(!is.null(gmr))
+    x <- google(x, level = level, url = gmr, cache = cache)
+  
+  # apple mobility
+  if(!is.null(amr))
+    x <- apple(x, level = level, url = amr, cache = cache)
   
   # group and order
   x <- x %>%

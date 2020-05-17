@@ -16,7 +16,9 @@ covid19(
   vintage = FALSE,
   verbose = TRUE,
   cache = TRUE,
-  wb = NULL
+  wb = NULL,
+  gmr = NULL,
+  amr = NULL
 )
 }
 \arguments{
@@ -37,6 +39,10 @@ covid19(
 \item{cache}{logical. Memory caching? Significantly improves performance on successive calls. Default \code{TRUE}.}
 
 \item{wb}{character vector of \href{https://data.worldbank.org}{World Bank} indicator codes. See details.}
+
+\item{gmr}{url to the \href{https://www.google.com/covid19/mobility/}{Google Mobility Report} dataset. See details.}
+
+\item{amr}{url to the \href{https://www.apple.com/covid19/mobility}{Apple Mobility Report} dataset. See details.}
 }
 \value{
 Grouped \code{tibble} (\code{data.frame}). See the \href{https://covid19datahub.io/articles/doc/data.html}{dataset description}
@@ -45,20 +51,26 @@ Grouped \code{tibble} (\code{data.frame}). See the \href{https://covid19datahub.
 Unified datasets for a better understanding of COVID-19.
 }
 \details{
-The raw data are cleaned by filling missing dates with \code{NA} values. 
+If \code{raw=TRUE}, the raw data are cleaned by filling missing dates with \code{NA} values. 
 This ensures that all locations share the same grid of dates and no single day is skipped. 
 Then, \code{NA} values are replaced with the previous non-\code{NA} value or \code{0}.
 
 The dataset can be extended with \href{https://data.worldbank.org}{World Bank Open Data} via the argument \code{wb}, a character vector of indicator codes.
 The codes can be found by inspecting the corresponding URL. For example, the code of the GDP indicator available at \url{https://data.worldbank.org/indicator/NY.GDP.MKTP.CD} is \code{NY.GDP.MKTP.CD}.
 The latest data available between the \code{start} and \code{end} date are downloaded.
+
+The dataset can be extended with \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports} via the argument \code{gmr}, the url to the Google CSV file.
+At the time of writing, the CSV is available at https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv
+
+The dataset can be extended with \href{https://www.apple.com/covid19/mobility}{Apple Mobility Reports} via the argument \code{amr}, the url to the Apple CSV file.
+At the time of writing, the CSV is available at https://covid19-static.cdn-apple.com/covid19-mobility-data/2008HotfixDev28/v2/en-us/applemobilitytrends-2020-05-15.csv
 }
 \note{
-We have invested a lot of time and effort in creating \href{https://covid19datahub.io}{COVID-19 Data Hub}. We expect you to agree to the following rules when using it:
+We have invested a lot of time and effort in creating \href{https://covid19datahub.io}{COVID-19 Data Hub}, please:
 
 \itemize{
-\item cite \href{https://doi.org/10.13140/RG.2.2.11649.81763}{Guidotti and Ardia (2020)} in working papers and published papers.
-\item place the URL \url{https://covid19datahub.io} in a footnote to help others find the Data Hub.
+\item cite \href{https://doi.org/10.13140/RG.2.2.11649.81763}{Guidotti and Ardia (2020)} in working papers and published papers that use it.
+\item place the URL \url{https://covid19datahub.io} in a footnote to help others find \href{https://covid19datahub.io}{COVID-19 Data Hub}.
 \item you assume full risk for the use of \href{https://covid19datahub.io}{COVID-19 Data Hub}. 
 We try our best to guarantee the data quality and consistency and the continuous filling of the Data Hub. 
 However, it is free software and comes with ABSOLUTELY NO WARRANTY. 
@@ -80,6 +92,14 @@ x <- covid19(c("Italy","US"), level = 3)
 # Merge with World Bank data
 wb <- c("gdp" = "NY.GDP.MKTP.CD", "hosp_beds" = "SH.MED.BEDS.ZS")
 x  <- covid19(wb = wb)
+
+# Merge with Google Mobility Reports
+gmr <- "https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv"
+x   <- covid19(gmr = gmr)
+
+# Merge with Apple Mobility Reports
+amr <- "https://covid19-static.cdn-apple.com/covid19-mobility-data/2008HotfixDev28/v2/en-us/applemobilitytrends-2020-05-15.csv"
+x   <- covid19(amr = amr)
 
 # Data sources
 s <- attr(x, "src")
