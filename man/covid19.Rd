@@ -49,7 +49,7 @@ Grouped \code{tibble} (\code{data.frame}). See the \href{https://covid19datahub.
 }
 \description{
 Unified dataset for a better understanding of COVID-19. Collects COVID-19 data across governmental sources. 
-Includes policy measures from \href{www.bsg.ox.ac.uk/covidtracker}{Oxford COVID-19 Government Response Tracker}. 
+Includes policy measures from \href{https://www.bsg.ox.ac.uk/covidtracker}{Oxford COVID-19 Government Response Tracker}. 
 Extends the dataset via an interface to 
 \href{https://data.worldbank.org/}{World Bank Open Data}, 
 \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports}, 
