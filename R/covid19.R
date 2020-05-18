@@ -1,8 +1,8 @@
 #' COVID-19 Data Hub
 #'
-#' Unified dataset for a better understanding of COVID-19. Collects COVID-19 data across several governmental sources. 
+#' Unified dataset for a better understanding of COVID-19. Collects COVID-19 data across governmental sources. 
 #' Includes policy measures from \href{www.bsg.ox.ac.uk/covidtracker}{Oxford COVID-19 Government Response Tracker}. 
-#' Extends the dataset with a simple interface to 
+#' Extends the dataset via an interface to 
 #' \href{https://data.worldbank.org/}{World Bank Open Data}, 
 #' \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports}, 
 #' \href{https://www.apple.com/covid19/mobility}{Apple Mobility Reports}.
@@ -17,7 +17,7 @@
 #' @param gmr url to the \href{https://www.google.com/covid19/mobility/}{Google Mobility Report} dataset. See details.
 #' @param amr url to the \href{https://www.apple.com/covid19/mobility}{Apple Mobility Report} dataset. See details.
 #' @param cache logical. Memory caching? Significantly improves performance on successive calls. Default \code{TRUE}.
-#' @param verbose logical. Print data sources? Default \code{TRUE}. Data sources are stored in the \code{src} attribute. See examples.
+#' @param verbose logical. Print data sources? Default \code{TRUE}. 
 #'
 #' @details 
 #' If \code{raw=TRUE}, the raw data are cleaned by filling missing dates with \code{NA} values. 
@@ -29,10 +29,10 @@
 #' The latest data available between the \code{start} and \code{end} date are downloaded.
 #'
 #' The dataset can be extended with \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports} via the argument \code{gmr}, the url to the Google CSV file.
-#' At the time of writing, the CSV is available at https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv
+#' At the time of writing, the CSV is available at \href{https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv}{this link}. 
 #' 
 #' The dataset can be extended with \href{https://www.apple.com/covid19/mobility}{Apple Mobility Reports} via the argument \code{amr}, the url to the Apple CSV file.
-#' At the time of writing, the CSV is available at https://covid19-static.cdn-apple.com/covid19-mobility-data/2008HotfixDev28/v2/en-us/applemobilitytrends-2020-05-15.csv
+#' At the time of writing, the CSV is available at \href{https://covid19-static.cdn-apple.com/covid19-mobility-data/2008HotfixDev28/v2/en-us/applemobilitytrends-2020-05-15.csv}{this link}.
 #'
 #' Data sources are stored in the \code{src} attribute. See examples.
 #'
