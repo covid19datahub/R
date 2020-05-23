@@ -2,7 +2,7 @@
 
 # R Interface to COVID-19 Data Hub
 
-![](https://www.r-pkg.org/badges/version/COVID19) ![](https://cranlogs.r-pkg.org/badges/grand-total/COVID19) [![](https://img.shields.io/badge/doi-10.13140/RG.2.2.11649.81763-orange.svg)](https://doi.org/10.13140/RG.2.2.11649.81763)
+![](https://www.r-pkg.org/badges/version/COVID19) ![](https://cranlogs.r-pkg.org/badges/last-month/COVID19) [![](https://img.shields.io/badge/doi-10.13140/RG.2.2.11649.81763-orange.svg)](https://doi.org/10.13140/RG.2.2.11649.81763)
 
 ## Quickstart
 
