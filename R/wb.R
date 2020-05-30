@@ -23,13 +23,17 @@ worldbank <- function(x, indicator, start, end){
     
     dplyr::arrange_at('date') %>%
     
-    dplyr::group_map(keep = TRUE, function(x, ...) {
+    dplyr::group_map(function(x, iso) {
+      
+      iso <- iso[[1]]
       
       idx <- ifelse(is.na(x), 1L, row(x))
       idx <- apply(idx, 2, max)
       
-      sapply(1:ncol(x), function(i) x[idx[i], i]) 
+      x <- sapply(1:ncol(x), function(i) x[idx[i], i]) 
+      x$iso_alpha_3 <- iso
       
+      return(x)
     
     }) %>%
     

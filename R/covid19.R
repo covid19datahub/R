@@ -107,8 +107,10 @@ covid19 <- function(country = NULL,
 
   # cache
   cachekey <- make.names(sprintf("covid19_%s_%s_%s_%s_%s_%s_%s",paste0(country, collapse = "."), level, ifelse(vintage, end, 0), raw, ifelse(is.null(wb),"",paste(wb, collapse = "")), ifelse(is.null(gmr),"",gmr), ifelse(is.null(amr),"",amr)))
-  if(cache & exists(cachekey, envir = cachedata))
-    return(get(cachekey, envir = cachedata) %>% dplyr::filter(date >= start & date <= end))
+  if(cache & exists(cachekey, envir = cachedata)){
+    x <- get(cachekey, envir = cachedata) 
+    return(x[x$date >= start & x$date <= end,])
+  }
 
   # data
   x    <- data.frame()
@@ -184,6 +186,6 @@ covid19 <- function(country = NULL,
     assign(cachekey, x, envir = cachedata)
 
   # return
-  return(x %>% dplyr::filter(date >= start & date <= end))
+  return(x[x$date >= start & x$date <= end,])
 
 }

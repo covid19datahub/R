@@ -60,7 +60,7 @@ cite <- function(x, src, verbose){
     
     dplyr::group_by_at('iso_alpha_3') %>%
     
-    dplyr::group_map(keep = TRUE, function(x, iso){
+    dplyr::group_map(function(x, iso){
       
       iso   <- iso[[1]]
       level <- unique(x$administrative_area_level)
@@ -71,17 +71,12 @@ cite <- function(x, src, verbose){
       s     <- src[which(src$data_type %in% var & src$iso_alpha_3==iso & src$administrative_area_level==level),]
       var   <- var[!(var %in% s$data_type)]
       
-      if(length(var)>0){
-        
+      if(length(var)>0)
         s <- s %>% 
           dplyr::bind_rows(src[which(src$data_type %in% var & is.na(src$iso_alpha_3) & is.na(src$administrative_area_level)),])
         
-        if(nrow(s)){
-          s$iso_alpha_3 <- iso
-          s$administrative_area_level <- level  
-        }
-        
-      }
+      s$iso_alpha_3 <- iso
+      s$administrative_area_level <- level  
       
       return(s)
       
