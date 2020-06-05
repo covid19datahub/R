@@ -8,7 +8,7 @@ apple <- function(x, level, url, cache){
   a <- read.csv(url, cache = cache)
   
   # formatting
-  by <- c("geo_type", "region", "transportation_type")
+  by <- c("geo_type", "region", "sub.region", "transportation_type")
   cn <- colnames(a)
   by <- by[by %in% cn]
   cn <- (cn %in% by) | !is.na(as.Date(cn, format = "X%Y.%m.%d"))
@@ -21,11 +21,14 @@ apple <- function(x, level, url, cache){
   # date
   a$date <- as.Date(a$date)
   
+  # key
+  a$key_apple_mobility <- gsub(", NA$", "", paste(a$region, a$sub.region, sep = ", "))
+  
   # merge
-  x <- merge(x, a, by.x = c("date","key_apple_mobility"), by.y = c("date","region"), all.x = TRUE)
+  x <- merge(x, a, by = c("date","key_apple_mobility"), all.x = TRUE)
     
   # drop 
-  rm <- c("geo_type", "region")
+  rm <- c("geo_type", "region", "sub.region")
   x  <- x[, setdiff(colnames(x), rm)]
   
   # return
