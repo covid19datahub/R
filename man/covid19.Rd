@@ -106,7 +106,7 @@ x   <- covid19(gmr = gmr)
 
 # Merge with Apple Mobility Reports
 amr <- "https://covid19-static.cdn-apple.com/covid19-mobility-data/"
-amr <- paste0(amr, "2008HotfixDev28/v2/en-us/applemobilitytrends-2020-05-15.csv")
+amr <- paste0(amr, "2009HotfixDev19/v3/en-us/applemobilitytrends-2020-06-03.csv")
 x   <- covid19(amr = amr)
 
 # Data sources
