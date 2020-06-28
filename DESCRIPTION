@@ -9,7 +9,7 @@ Authors@R: c(
 Description: Unified dataset for a better understanding of COVID-19. The package collects COVID-19 data across governmental sources, includes policy measures from 'Oxford COVID-19 Government Response Tracker' <https://www.bsg.ox.ac.uk/covidtracker>, and extends the dataset via an interface to 'World Bank Open Data' <https://data.worldbank.org/>, 'Google Mobility Reports' <https://www.google.com/covid19/mobility/>, 'Apple Mobility Reports' <https://www.apple.com/covid19/mobility>.
 License: GPL-3
 URL: https://covid19datahub.io
-BugReports: https://github.com/covid19datahub/R/issues
+BugReports: https://github.com/covid19datahub/COVID19/issues
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 2.10)  
