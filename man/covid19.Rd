@@ -49,8 +49,8 @@ Grouped \code{tibble} (\code{data.frame}). See the \href{https://covid19datahub.
 }
 \description{
 Download COVID-19 data across governmental sources at national, regional, and city level.
-Includes policy measures by \href{https://www.bsg.ox.ac.uk/covidtracker}{Oxford COVID-19 Government Response Tracker}. 
-Provides a seamless integration with 
+Includes policy measures by \href{https://www.bsg.ox.ac.uk/covidtracker}{Oxford COVID-19 Government Response Tracker}
+and provides a seamless integration with 
 \href{https://data.worldbank.org/}{World Bank Open Data}, 
 \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports}, 
 \href{https://www.apple.com/covid19/mobility}{Apple Mobility Reports}.
@@ -75,7 +75,7 @@ At the time of writing, the CSV is available \href{https://covid19-static.cdn-ap
 We have invested a lot of time and effort in creating \href{https://covid19datahub.io}{COVID-19 Data Hub}, please:
 
 \itemize{
-\item cite \href{https://doi.org/10.21105/joss.02376}{Guidotti and Ardia (2020)} in working papers and published papers that use it.
+\item cite \href{https://doi.org/10.21105/joss.02376}{Guidotti and Ardia (2020)} when using \href{https://covid19datahub.io}{COVID-19 Data Hub}.
 \item place the URL \url{https://covid19datahub.io} in a footnote to help others find \href{https://covid19datahub.io}{COVID-19 Data Hub}.
 \item you assume full risk for the use of \href{https://covid19datahub.io}{COVID-19 Data Hub}. 
 We try our best to guarantee the data quality and consistency and the continuous filling of the Data Hub. 
