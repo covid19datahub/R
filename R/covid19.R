@@ -1,8 +1,8 @@
 #' COVID-19 Data Hub
 #'
-#' Unified dataset for a better understanding of COVID-19. Collects COVID-19 data across governmental sources. 
-#' Includes policy measures from \href{https://www.bsg.ox.ac.uk/covidtracker}{Oxford COVID-19 Government Response Tracker}. 
-#' Extends the dataset via an interface to 
+#' Download COVID-19 data across governmental sources at national, regional, and city level.
+#' Includes policy measures by \href{https://www.bsg.ox.ac.uk/covidtracker}{Oxford COVID-19 Government Response Tracker}. 
+#' Provides a seamless integration with 
 #' \href{https://data.worldbank.org/}{World Bank Open Data}, 
 #' \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports}, 
 #' \href{https://www.apple.com/covid19/mobility}{Apple Mobility Reports}.
@@ -23,20 +23,19 @@
 #' If \code{raw=TRUE}, the raw data are cleaned by filling missing dates with \code{NA} values. 
 #' This ensures that all locations share the same grid of dates and no single day is skipped. 
 #' Then, \code{NA} values are replaced with the previous non-\code{NA} value or \code{0}.
+#' Policies for administrative areas level 2 and 3 are inherited from national-level policies.
 #' 
 #' The dataset can be extended with \href{https://data.worldbank.org}{World Bank Open Data} via the argument \code{wb}, a character vector of indicator codes.
 #' The codes can be found by inspecting the corresponding URL. For example, the code of the GDP indicator available at \url{https://data.worldbank.org/indicator/NY.GDP.MKTP.CD} is \code{NY.GDP.MKTP.CD}.
 #' The latest data available between the \code{start} and \code{end} date are downloaded.
 #'
 #' The dataset can be extended with \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports} via the argument \code{gmr}, the url to the Google CSV file.
-#' At the time of writing, the CSV is available at \href{https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv}{this link}. 
+#' At the time of writing, the CSV is available \href{https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv}{here}. 
 #' 
 #' The dataset can be extended with \href{https://www.apple.com/covid19/mobility}{Apple Mobility Reports} via the argument \code{amr}, the url to the Apple CSV file.
-#' At the time of writing, the CSV is available at \href{https://covid19-static.cdn-apple.com/covid19-mobility-data/2008HotfixDev28/v2/en-us/applemobilitytrends-2020-05-15.csv}{this link}.
+#' At the time of writing, the CSV is available \href{https://covid19-static.cdn-apple.com/covid19-mobility-data/2012HotfixDev8/v3/en-us/applemobilitytrends-2020-07-09.csv}{here}.
 #'
-#' Data sources are stored in the \code{src} attribute. See examples.
-#'
-#' @return Grouped \code{tibble} (\code{data.frame}). See the \href{https://covid19datahub.io/articles/doc/data.html}{dataset description}
+#' @return Grouped \code{tibble} (\code{data.frame}). See the \href{https://covid19datahub.io/articles/doc/data.html}{dataset documentation}
 #'
 #' @examples
 #' \dontrun{
@@ -50,33 +49,34 @@
 #' # Specific country data by city
 #' x <- covid19(c("Italy","US"), level = 3)
 #' 
-#' # Merge with World Bank data
+#' # Merge with World Bank data. It may take some time...
 #' wb <- c("gdp" = "NY.GDP.MKTP.CD", "hosp_beds" = "SH.MED.BEDS.ZS")
 #' x  <- covid19(wb = wb)
 #' 
-#' # Merge with Google Mobility Reports
+#' # Merge with Google Mobility Reports. It may take some time...
 #' gmr <- "https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv"
 #' x   <- covid19(gmr = gmr)
 #' 
-#' # Merge with Apple Mobility Reports
+#' # Merge with Apple Mobility Reports. It may take some time...
 #' amr <- "https://covid19-static.cdn-apple.com/covid19-mobility-data/"
-#' amr <- paste0(amr, "2009HotfixDev19/v3/en-us/applemobilitytrends-2020-06-03.csv")
+#' amr <- paste0(amr, "2012HotfixDev8/v3/en-us/applemobilitytrends-2020-07-09.csv")
 #' x   <- covid19(amr = amr)
 #' 
 #' # Data sources
-#' s <- attr(x, "src")
+#' s <- covid19cite(x)
+#' View(s)
 #' }
 #'
 #' @source \url{https://covid19datahub.io}
 #'
 #' @references 
-#' Guidotti, E., Ardia, D., (2020), "COVID-19 Data Hub", Working paper, \doi{10.13140/RG.2.2.11649.81763}.
+#' Guidotti, E., Ardia, D., (2020), "COVID-19 Data Hub", Journal of Open Source Software 5(51):2376, \doi{10.21105/joss.02376}.
 #'
 #' @note 
 #' We have invested a lot of time and effort in creating \href{https://covid19datahub.io}{COVID-19 Data Hub}, please:
 #' 
 #' \itemize{
-#' \item cite \href{https://www.researchgate.net/publication/340771808_COVID-19_Data_Hub}{Guidotti and Ardia (2020)} in working papers and published papers that use it.
+#' \item cite \href{https://doi.org/10.21105/joss.02376}{Guidotti and Ardia (2020)} in working papers and published papers that use it.
 #' \item place the URL \url{https://covid19datahub.io} in a footnote to help others find \href{https://covid19datahub.io}{COVID-19 Data Hub}.
 #' \item you assume full risk for the use of \href{https://covid19datahub.io}{COVID-19 Data Hub}. 
 #' We try our best to guarantee the data quality and consistency and the continuous filling of the Data Hub. 
@@ -106,11 +106,9 @@ covid19 <- function(country = NULL,
          3: admin area level 3")
 
   # cache
-  cachekey <- make.names(sprintf("covid19_%s_%s_%s_%s_%s_%s_%s",paste0(country, collapse = "."), level, ifelse(vintage, end, 0), raw, ifelse(is.null(wb),"",paste(wb, collapse = "")), ifelse(is.null(gmr),"",gmr), ifelse(is.null(amr),"",amr)))
-  if(cache & exists(cachekey, envir = cachedata)){
-    x <- get(cachekey, envir = cachedata) 
-    return(x[x$date >= start & x$date <= end,])
-  }
+  cachekey <- make.names(sprintf("covid19_%s_%s_%s_%s_%s_%s", level, ifelse(vintage, end, 0), raw, ifelse(is.null(wb),"",paste(wb, collapse = "")), ifelse(is.null(gmr),"",gmr), ifelse(is.null(amr),"",amr)))
+  if(cache & exists(cachekey, envir = cachedata))
+    return(filter(get(cachekey, envir = cachedata), country = country, start = start, end = end))
 
   # data
   x    <- data.frame()
@@ -146,14 +144,6 @@ covid19 <- function(country = NULL,
     
   }
   
-  # filter
-  if(length(country <- toupper(country)) > 0){
-    
-    id <- iso_alpha_3 <- iso_alpha_2 <- iso_numeric <- administrative_area_level_1 <- NA
-    x  <- dplyr::filter(x, toupper(id) %in% country | iso_alpha_3 %in% country | iso_alpha_2 %in% country | iso_numeric %in% country | toupper(administrative_area_level_1) %in% country)
-    
-  }
-
   # check
   if(nrow(x)==0)
     return(NULL)
@@ -175,17 +165,24 @@ covid19 <- function(country = NULL,
   
   # group and order
   x <- x %>%
-    dplyr::group_by(id) %>%
-    dplyr::arrange(id, date)
+    dplyr::group_by_at("id") %>%
+    dplyr::arrange_at(c("id", "date"))
 
   # src
-  attr(x, "src") <- try(cite(x, src, verbose = verbose))
+  attr(x, "src") <- try(cite(x, src))
   
   # cache
   if(cache)
     assign(cachekey, x, envir = cachedata)
 
+  # verbose
+  if(verbose){
+    cat("We have invested a lot of time and effort in creating COVID-19 Data Hub, please cite the following when using it:\n")
+    print(utils::citation("COVID19"))
+    cat("To retrieve citation and metadata of the individual data sources see ?covid19cite. To hide this message use 'verbose = FALSE'.\n")
+  }
+  
   # return
-  return(x[x$date >= start & x$date <= end,])
+  return(filter(x, country = country, start = start, end = end))
 
 }

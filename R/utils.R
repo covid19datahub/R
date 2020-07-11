@@ -54,7 +54,26 @@ read.zip <- function(zip, files, cache, ...){
   
 }
 
-cite <- function(x, src, verbose){
+filter <- function(x, country, start, end){
+  
+  src <- attr(x, 'src')
+  x   <- x[x$date >= start & x$date <= end,]
+  
+  if(length(country <- toupper(country)) > 0){
+    
+    id <- iso_alpha_3 <- iso_alpha_2 <- iso_numeric <- administrative_area_level_1 <- NA
+    x  <- dplyr::filter(x, toupper(id) %in% country | iso_alpha_3 %in% country | iso_alpha_2 %in% country | iso_numeric %in% country | toupper(administrative_area_level_1) %in% country)
+    
+  }
+  
+  if(!is.null(src))
+    attr(x, 'src') <- src[src$iso_alpha_3 %in% x$iso_alpha_3,]
+  
+  return(x)
+  
+}
+
+cite <- function(x, src){
   
   x <- x %>% 
     
@@ -85,38 +104,6 @@ cite <- function(x, src, verbose){
     dplyr::bind_rows() %>%
     
     dplyr::distinct()
-  
-  if(verbose){
-    
-    y <- x %>% 
-      dplyr::mutate(url = gsub("(http://|https://|www\\.)([^/]+)(.*)", "\\1\\2", url)) %>%
-      dplyr::distinct_at(c('title', 'url'), .keep_all = TRUE)
-    
-    y <- apply(y, 1, function(y){
-      
-      textVersion <- y['textVersion']
-      if(is.na(textVersion))
-        textVersion <- paste0(y['title'],' (',y['year'],')',', ',y['url'])
-      
-      utils::bibentry(
-        bibtype     = ifelse(is.na(y['bibtype']), "Misc", y['bibtype']),
-        title       = y['title'],
-        year        = y['year'],
-        author      = y['author'],
-        institution = y['institution'], 
-        textVersion = textVersion
-      )  
-      
-    })
-    
-    cit <- utils::citation("COVID19")
-    for(i in 1:length(y))
-      cit <- c(y[[i]], cit)
-    
-    print(cit, style = "citation")
-    cat("To hide the data sources use 'verbose = FALSE'.")
-    
-  }
   
   return(x)
   
