@@ -179,7 +179,7 @@ covid19 <- function(country = NULL,
   if(verbose){
     cat("We have invested a lot of time and effort in creating COVID-19 Data Hub, please cite the following when using it:\n")
     print(utils::citation("COVID19"))
-    cat("To retrieve citation and metadata of the individual data sources see ?covid19cite. To hide this message use 'verbose = FALSE'.\n")
+    cat("To retrieve citation and metadata of the data sources see ?covid19cite. To hide this message use 'verbose = FALSE'.\n")
   }
   
   # return
