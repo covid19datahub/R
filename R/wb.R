@@ -5,8 +5,18 @@ worldbank <- function(x, indicator, start, end){
   end   <- format(as.Date(end), "%Y")
   
   # download
-  w <- wbstats::wb(indicator = indicator, startdate = start, enddate = end)
-  w <- w %>% tidyr::pivot_wider(c('iso3c','date'), names_from = 'indicatorID', values_from = 'value')
+  if(exists('wb_data', where = asNamespace('wbstats'), mode='function')){
+    
+    w <- wbstats::wb_data(indicator = indicator, start_date = start, end_date = end, return_wide = FALSE)
+    w <- w %>% tidyr::pivot_wider(c('iso3c','date'), names_from = 'indicator_id', values_from = 'value')
+    
+  }
+  else{
+    
+    w <- wbstats::wb(indicator = indicator, startdate = start, enddate = end)
+    w <- w %>% tidyr::pivot_wider(c('iso3c','date'), names_from = 'indicatorID', values_from = 'value')
+    
+  }
   
   # column names
   map         <- c("iso_alpha_3" = "iso3c", "date" = "date", indicator)
