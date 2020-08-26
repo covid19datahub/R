@@ -63,6 +63,6 @@ Data sources are stored in the `src` attribute.
 
 ```R
 s <- covid19cite(x)
-View(S)
+View(s)
 ```
 
