@@ -12,7 +12,7 @@ covid19(
   level = 1,
   start = "2010-01-01",
   end = Sys.Date(),
-  raw = FALSE,
+  raw = TRUE,
   vintage = FALSE,
   verbose = TRUE,
   cache = TRUE,
@@ -30,7 +30,7 @@ covid19(
 
 \item{end}{the end date of the period of interest.}
 
-\item{raw}{logical. Skip data cleaning? Default \code{FALSE}. See details.}
+\item{raw}{logical. Skip data cleaning? Default \code{TRUE}. See details.}
 
 \item{vintage}{logical. Retrieve the snapshot of the dataset that was generated at the \code{end} date instead of using the latest version. Default \code{FALSE}.}
 
@@ -56,9 +56,10 @@ and provides a seamless integration with
 \href{https://www.apple.com/covid19/mobility}{Apple Mobility Reports}.
 }
 \details{
-If \code{raw=TRUE}, the raw data are cleaned by filling missing dates with \code{NA} values. 
+If \code{raw=FALSE}, the raw data are cleaned by filling missing dates with \code{NA} values. 
 This ensures that all locations share the same grid of dates and no single day is skipped. 
 Then, \code{NA} values are replaced with the previous non-\code{NA} value or \code{0}.
+
 Policies for administrative areas level 2 and 3 are inherited from national-level policies.
 
 The dataset can be extended with \href{https://data.worldbank.org}{World Bank Open Data} via the argument \code{wb}, a character vector of indicator codes.
@@ -105,7 +106,7 @@ x   <- covid19(gmr = gmr)
 
 # Merge with Apple Mobility Reports. It may take some time...
 amr <- "https://covid19-static.cdn-apple.com/covid19-mobility-data/"
-amr <- paste0(amr, "2012HotfixDev8/v3/en-us/applemobilitytrends-2020-07-09.csv")
+amr <- paste0(amr, "2015HotfixDev10/v3/en-us/applemobilitytrends-2020-08-24.csv")
 x   <- covid19(amr = amr)
 
 # Data sources

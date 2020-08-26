@@ -90,12 +90,16 @@ cite <- function(x, src){
       s     <- src[which(src$data_type %in% var & src$iso_alpha_3==iso & src$administrative_area_level==level),]
       var   <- var[!(var %in% s$data_type)]
       
-      if(length(var)>0)
-        s <- s %>% 
-          dplyr::bind_rows(src[which(src$data_type %in% var & is.na(src$iso_alpha_3) & is.na(src$administrative_area_level)),])
+      if(length(var)>0){
+        miss <- src[which(src$data_type %in% var & is.na(src$iso_alpha_3) & is.na(src$administrative_area_level)),]
+        if(nrow(miss))
+          s <- s %>% dplyr::bind_rows(miss)
+      }
         
-      s$iso_alpha_3 <- iso
-      s$administrative_area_level <- level  
+      if(nrow(s)){
+        s$iso_alpha_3 <- iso
+        s$administrative_area_level <- level  
+      }
       
       return(s)
       
