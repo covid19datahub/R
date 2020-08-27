@@ -6,7 +6,7 @@ Authors@R: c(
     person(given = "Emanuele", family = "Guidotti", email = "emanuele.guidotti@unine.ch", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-8961-6623")),
     person(given = "David", family = "Ardia", role = c("ctb"), comment = c(ORCID = "0000-0003-2823-782X"))
   )
-Description: Download COVID-19 data across governmental sources at national, regional, and city level, as described in Guidotti and Ardia (2020) <doi:10.21105/joss.02376>. Includes policy measures by 'Oxford COVID-19 Government Response Tracker' <https://www.bsg.ox.ac.uk/covidtracker>. Provides a seamless integration with 'World Bank Open Data' <https://data.worldbank.org/>, 'Google Mobility Reports' <https://www.google.com/covid19/mobility/>, 'Apple Mobility Reports' <https://www.apple.com/covid19/mobility>.
+Description: Download COVID-19 data across governmental sources at national, regional, and city level, as described in Guidotti and Ardia (2020) <doi:10.21105/joss.02376>. Includes policy measures by 'Oxford COVID-19 Government Response Tracker' <https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker>. Provides a seamless integration with 'World Bank Open Data' <https://data.worldbank.org/>, 'Google Mobility Reports' <https://www.google.com/covid19/mobility/>, 'Apple Mobility Reports' <https://covid19.apple.com/mobility>.
 License: GPL-3
 URL: https://covid19datahub.io
 BugReports: https://github.com/covid19datahub/COVID19/issues
