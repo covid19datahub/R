@@ -42,18 +42,18 @@ covid19(
 
 \item{gmr}{url to the \href{https://www.google.com/covid19/mobility/}{Google Mobility Report} dataset. See details.}
 
-\item{amr}{url to the \href{https://www.apple.com/covid19/mobility}{Apple Mobility Report} dataset. See details.}
+\item{amr}{url to the \href{https://covid19.apple.com/mobility}{Apple Mobility Report} dataset. See details.}
 }
 \value{
 Grouped \code{tibble} (\code{data.frame}). See the \href{https://covid19datahub.io/articles/doc/data.html}{dataset documentation}
 }
 \description{
 Download COVID-19 data across governmental sources at national, regional, and city level.
-Includes policy measures by \href{https://www.bsg.ox.ac.uk/covidtracker}{Oxford COVID-19 Government Response Tracker}
+Includes policy measures by \href{https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker}{Oxford COVID-19 Government Response Tracker}
 and provides a seamless integration with 
 \href{https://data.worldbank.org/}{World Bank Open Data}, 
 \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports}, 
-\href{https://www.apple.com/covid19/mobility}{Apple Mobility Reports}.
+\href{https://covid19.apple.com/mobility}{Apple Mobility Reports}.
 }
 \details{
 If \code{raw=FALSE}, the raw data are cleaned by filling missing dates with \code{NA} values. 
@@ -69,8 +69,8 @@ The latest data available between the \code{start} and \code{end} date are downl
 The dataset can be extended with \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports} via the argument \code{gmr}, the url to the Google CSV file.
 At the time of writing, the CSV is available \href{https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv}{here}. 
 
-The dataset can be extended with \href{https://www.apple.com/covid19/mobility}{Apple Mobility Reports} via the argument \code{amr}, the url to the Apple CSV file.
-At the time of writing, the CSV is available \href{https://covid19-static.cdn-apple.com/covid19-mobility-data/2012HotfixDev8/v3/en-us/applemobilitytrends-2020-07-09.csv}{here}.
+The dataset can be extended with \href{https://covid19.apple.com/mobility}{Apple Mobility Reports} via the argument \code{amr}, the url to the Apple CSV file.
+At the time of writing, the CSV is available \href{https://covid19-static.cdn-apple.com/covid19-mobility-data/2015HotfixDev10/v3/en-us/applemobilitytrends-2020-08-24.csv}{here}.
 }
 \note{
 We have invested a lot of time and effort in creating \href{https://covid19datahub.io}{COVID-19 Data Hub}, please:
