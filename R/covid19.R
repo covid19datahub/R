@@ -34,7 +34,7 @@
 #' At the time of writing, the CSV is available \href{https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv}{here}. 
 #' 
 #' The dataset can be extended with \href{https://covid19.apple.com/mobility}{Apple Mobility Reports} via the argument \code{amr}, the url to the Apple CSV file.
-#' At the time of writing, the CSV is available \href{https://covid19-static.cdn-apple.com/covid19-mobility-data/2015HotfixDev10/v3/en-us/applemobilitytrends-2020-08-24.csv}{here}.
+#' At the time of writing, the CSV is available \href{https://covid19-static.cdn-apple.com/covid19-mobility-data/2018HotfixDev23/v3/en-us/applemobilitytrends-2020-10-10.csv}{here}.
 #'
 #' @return Grouped \code{tibble} (\code{data.frame}). See the \href{https://covid19datahub.io/articles/doc/data.html}{dataset documentation}
 #'
@@ -60,7 +60,7 @@
 #' 
 #' # Merge with Apple Mobility Reports. It may take some time...
 #' amr <- "https://covid19-static.cdn-apple.com/covid19-mobility-data/"
-#' amr <- paste0(amr, "2015HotfixDev10/v3/en-us/applemobilitytrends-2020-08-24.csv")
+#' amr <- paste0(amr, "2018HotfixDev23/v3/en-us/applemobilitytrends-2020-10-10.csv")
 #' x   <- covid19(amr = amr)
 #' 
 #' # Data sources
