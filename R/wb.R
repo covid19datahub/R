@@ -1,5 +1,8 @@
 worldbank <- function(x, indicator, start, end){
   
+  if(!requireNamespace("wbstats", quietly = TRUE))
+    stop("Package 'wbstats' needed but not installed. Install with: install.packages('wbstats')")
+  
   # date
   start <- format(as.Date(start), "%Y")
   end   <- format(as.Date(end), "%Y")
