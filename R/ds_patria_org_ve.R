@@ -1,6 +1,4 @@
-library("COVID19")
-
-venezuela <- function(level, cache) {
+VEN <- function(level, cache) {
   
   if(level == 1) {
     
