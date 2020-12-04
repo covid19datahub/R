@@ -1,0 +1,34 @@
+library("COVID19")
+
+venezuela <- function(level, cache) {
+  
+  if(level == 1) {
+    
+    # download
+    url.daily <- "https://covid19.patria.org.ve/api/v1/timeline"
+    x.daily   <- jsonlite::fromJSON(url.daily, flatten=TRUE)
+    
+    # parse
+    x <- map_data(x.daily, c(
+      "Date"            = "date",
+      "DataDTS",
+      "Confirmed.Count" = "confirmed",
+      "Confirmed.New",
+      "Recovered.Count" = "recovered",
+      "Recovered.New",
+      "Deaths.Count"    = "deaths",
+      "Deaths.New",
+      "Active.Count"
+      ))
+    x$date <- as.Date(x$date, "%Y-%m-%d")
+    
+    x <- x %>% select(date, confirmed, recovered, deaths)
+    
+  }
+ 
+  # return
+  return(x)
+  
+}
+
+
