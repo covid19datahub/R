@@ -4,6 +4,15 @@
 
 ![](https://www.r-pkg.org/badges/version/COVID19) ![](https://cranlogs.r-pkg.org/badges/last-month/COVID19) [![DOI](https://joss.theoj.org/papers/10.21105/joss.02376/status.svg)](https://doi.org/10.21105/joss.02376)
 
+Download COVID-19 data across governmental sources at national, regional, and city level, as described in [Guidotti and Ardia (2020)](doi:10.21105/joss.02376). Includes the time series of vaccines, tests, cases, deaths, recovered, hospitalizations, intensive therapy, and policy measures by [Oxford COVID-19 Government Response Tracker](https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker). Please agree to the [Terms of Use](https://covid19datahub.io/LICENSE.html) and cite the following reference when using it:
+
+**Reference**
+
+Guidotti, E., Ardia, D., (2020).      
+COVID-19 Data Hub       
+_Journal of Open Source Software_, **5**(51):2376   
+[https://doi.org/10.21105/joss.02376](https://doi.org/10.21105/joss.02376) 
+
 ## Quickstart
 
 ```R
@@ -66,3 +75,21 @@ s <- covid19cite(x)
 View(s)
 ```
 
+## Cite as
+
+*Guidotti, E., Ardia, D., (2020), "COVID-19 Data Hub", Journal of Open Source Software 5(51):2376, doi: 10.21105/joss.02376.*
+
+A BibTeX entry for LaTeX users is
+
+```latex
+@Article{,
+    title = {COVID-19 Data Hub},
+    year = {2020},
+    doi = {10.21105/joss.02376},
+    author = {Emanuele Guidotti and David Ardia},
+    journal = {Journal of Open Source Software},
+    volume = {5},
+    number = {51},
+    pages = {2376}
+}
+```
