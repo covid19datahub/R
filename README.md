@@ -4,7 +4,7 @@
 
 ![](https://www.r-pkg.org/badges/version/COVID19) ![](https://cranlogs.r-pkg.org/badges/last-month/COVID19) [![DOI](https://joss.theoj.org/papers/10.21105/joss.02376/status.svg)](https://doi.org/10.21105/joss.02376)
 
-Download COVID-19 data across governmental sources at national, regional, and city level, as described in [Guidotti and Ardia (2020)](doi:10.21105/joss.02376). Includes the time series of vaccines, tests, cases, deaths, recovered, hospitalizations, intensive therapy, and policy measures by [Oxford COVID-19 Government Response Tracker](https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker). Please agree to the [Terms of Use](https://covid19datahub.io/LICENSE.html) and cite the following reference when using it:
+Download COVID-19 data across governmental sources at national, regional, and city level, as described in [Guidotti and Ardia (2020)](https://www.doi.org/10.21105/joss.02376). Includes the time series of vaccines, tests, cases, deaths, recovered, hospitalizations, intensive therapy, and policy measures by [Oxford COVID-19 Government Response Tracker](https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker). Please agree to the [Terms of Use](https://covid19datahub.io/LICENSE.html) and cite the following reference when using it:
 
 **Reference**
 
