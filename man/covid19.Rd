@@ -49,8 +49,9 @@ Grouped \code{tibble} (\code{data.frame}). See the \href{https://covid19datahub.
 }
 \description{
 Download COVID-19 data across governmental sources at national, regional, and city level.
-Includes policy measures by \href{https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker}{Oxford COVID-19 Government Response Tracker}
-and provides a seamless integration with 
+Includes the time series of vaccines, tests, cases, deaths, recovered, hospitalizations, intensive therapy, 
+and policy measures by \href{https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker}{Oxford COVID-19 Government Response Tracker}.
+Provides a seamless integration with 
 \href{https://data.worldbank.org/}{World Bank Open Data}, 
 \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports}, 
 \href{https://covid19.apple.com/mobility}{Apple Mobility Reports}.
@@ -60,8 +61,6 @@ If \code{raw=FALSE}, the raw data are cleaned by filling missing dates with \cod
 This ensures that all locations share the same grid of dates and no single day is skipped. 
 Then, \code{NA} values are replaced with the previous non-\code{NA} value or \code{0}.
 
-Policies for administrative areas level 2 and 3 are inherited from national-level policies.
-
 The dataset can be extended with \href{https://data.worldbank.org}{World Bank Open Data} via the argument \code{wb}, a character vector of indicator codes.
 The codes can be found by inspecting the corresponding URL. For example, the code of the GDP indicator available at \url{https://data.worldbank.org/indicator/NY.GDP.MKTP.CD} is \code{NY.GDP.MKTP.CD}.
 The latest data available between the \code{start} and \code{end} date are downloaded.
@@ -70,7 +69,9 @@ The dataset can be extended with \href{https://www.google.com/covid19/mobility/}
 At the time of writing, the CSV is available \href{https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv}{here}. 
 
 The dataset can be extended with \href{https://covid19.apple.com/mobility}{Apple Mobility Reports} via the argument \code{amr}, the url to the Apple CSV file.
-At the time of writing, the CSV is available \href{https://covid19-static.cdn-apple.com/covid19-mobility-data/2018HotfixDev23/v3/en-us/applemobilitytrends-2020-10-10.csv}{here}.
+At the time of writing, the CSV is available \href{https://covid19-static.cdn-apple.com/covid19-mobility-data/2023HotfixDev26/v3/en-us/applemobilitytrends-2021-01-01.csv}{here}.
+
+Refer to \href{https://covid19datahub.io/articles/data.html}{this webpage} for more details on the data.
 }
 \note{
 We have invested a lot of time and effort in creating \href{https://covid19datahub.io}{COVID-19 Data Hub}, please:
@@ -106,7 +107,7 @@ x   <- covid19(gmr = gmr)
 
 # Merge with Apple Mobility Reports. It may take some time...
 amr <- "https://covid19-static.cdn-apple.com/covid19-mobility-data/"
-amr <- paste0(amr, "2018HotfixDev23/v3/en-us/applemobilitytrends-2020-10-10.csv")
+amr <- paste0(amr, "2023HotfixDev26/v3/en-us/applemobilitytrends-2021-01-01.csv")
 x   <- covid19(amr = amr)
 
 # Data sources
