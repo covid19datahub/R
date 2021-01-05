@@ -4,9 +4,9 @@ bibentry(
 	year=2020,
 	DOI="10.21105/joss.02376", 
 	author=as.person("Emanuele Guidotti [aut], David Ardia [aut]"),
-        journal="Journal of Open Source Software",
-        volume="5",
-        number="51",
-        pages="2376",
+    journal="Journal of Open Source Software",
+    volume="5",
+    number="51",
+    pages="2376",
 	textVersion='Guidotti, E., Ardia, D., (2020), "COVID-19 Data Hub", Journal of Open Source Software 5(51):2376, doi: 10.21105/joss.02376.'
 )

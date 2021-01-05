@@ -77,7 +77,7 @@ Refer to \href{https://covid19datahub.io/articles/data.html}{this webpage} for m
 We have invested a lot of time and effort in creating \href{https://covid19datahub.io}{COVID-19 Data Hub}, please:
 
 \itemize{
-\item cite \href{https://doi.org/10.21105/joss.02376}{Guidotti and Ardia (2020)} when using \href{https://covid19datahub.io}{COVID-19 Data Hub}.
+\item cite \href{https://joss.theoj.org/papers/10.21105/joss.02376}{Guidotti and Ardia (2020)} when using \href{https://covid19datahub.io}{COVID-19 Data Hub}.
 \item place the URL \url{https://covid19datahub.io} in a footnote to help others find \href{https://covid19datahub.io}{COVID-19 Data Hub}.
 \item you assume full risk for the use of \href{https://covid19datahub.io}{COVID-19 Data Hub}. 
 We try our best to guarantee the data quality and consistency and the continuous filling of the Data Hub. 
