@@ -13,12 +13,12 @@
 #' @param start the start date of the period of interest.
 #' @param end the end date of the period of interest.
 #' @param vintage logical. Retrieve the snapshot of the dataset that was generated at the \code{end} date instead of using the latest version. Default \code{FALSE}.
-#' @param raw logical. Skip data cleaning? Default \code{TRUE}. See details.
 #' @param wb character vector of \href{https://data.worldbank.org}{World Bank} indicator codes. See details.
 #' @param gmr url to the \href{https://www.google.com/covid19/mobility/}{Google Mobility Report} dataset. See details.
 #' @param amr url to the \href{https://covid19.apple.com/mobility}{Apple Mobility Report} dataset. See details.
-#' @param cache logical. Memory caching? Significantly improves performance on successive calls. Default \code{TRUE}.
+#' @param dir folder to store downloads.
 #' @param verbose logical. Print data sources? Default \code{TRUE}. 
+#' @param ... not used.
 #'
 #' @details 
 #' If \code{raw=FALSE}, the raw data are cleaned by filling missing dates with \code{NA} values. 
@@ -64,9 +64,6 @@
 #' amr <- paste0(amr, "2023HotfixDev26/v3/en-us/applemobilitytrends-2021-01-01.csv")
 #' x   <- covid19(amr = amr)
 #' 
-#' # Data sources
-#' s <- covid19cite(x)
-#' View(s)
 #' }
 #'
 #' @source \url{https://covid19datahub.io}
@@ -86,69 +83,78 @@
 #' Reliance on \href{https://covid19datahub.io}{COVID-19 Data Hub} for medical guidance or use of \href{https://covid19datahub.io}{COVID-19 Data Hub} in commerce is strictly prohibited.
 #' }
 #' 
+#' @importFrom data.table :=
+#' 
 #' @export
 #'
 covid19 <- function(country = NULL,
                     level   = 1,
                     start   = "2010-01-01",
                     end     = Sys.Date(),
-                    raw     = TRUE,
-                    vintage = FALSE,
-                    verbose = TRUE,
-                    cache   = TRUE,
+                    vintage = NULL,
                     wb      = NULL,
                     gmr     = NULL,
-                    amr     = NULL){
+                    amr     = NULL,
+                    dir     = tempdir(),
+                    verbose = TRUE,
+                    ...){
 
-  # fallback
-  if(!(level %in% 1:3))
-    stop("valid options for 'level' are:
-         1: admin area level 1
-         2: admin area level 2
-         3: admin area level 3")
+  if(any(!level %in% 1:3))
+    stop("'level' must be one of 1, 2, 3 or a combination of those.")
 
-  # cache
-  cachekey <- make.names(sprintf("covid19_%s_%s_%s_%s_%s_%s", level, ifelse(vintage, end, 0), raw, ifelse(is.null(wb),"",paste(wb, collapse = "")), ifelse(is.null(gmr),"",gmr), ifelse(is.null(amr),"",amr)))
-  if(cache & exists(cachekey, envir = cachedata))
-    return(filter(get(cachekey, envir = cachedata), country = country, start = start, end = end))
-
-  # data
-  x    <- data.frame()
-  url  <- "https://storage.covid19datahub.io"
-  name <- sprintf("%sdata-%s", ifelse(raw, 'raw', ''), level)
-  
-  # latest
-  if(!vintage){
-    
-    zip  <- sprintf("%s/%s.zip", url, name) 
-    file <- sprintf("%s.csv", name) 
-    
-    x   <- read.zip(zip, file, cache = cache)[[1]]
-    src <- read.csv(sprintf("%s/src.csv", url), cache = cache)
-    
+  if(is.logical(vintage)){
+    if(!vintage){
+      vintage <- NULL
+    }
+    else{
+      vintage <- end
+      warning(sprintf("Using vintage='%s' (end date). See ?covid19 for the new usage of the 'vintage' parameter.", vintage))
+    }
   }
-  # vintage
-  else {
+  
+  if(is.null(vintage)){
     
-    if(end < "2020-04-14")
-      stop("vintage data not available before 2020-04-14")
-    if(end > Sys.Date()-2)
-      stop(sprintf("vintage data not available on %s", end))
+    if(is.null(country) | all(level==1)){
+      x <- data.table::rbindlist(fill = TRUE, lapply(level, function(i){
+        url <- endpoint("level/", i, ".csv.gz")
+        read.gz(url, dir = dir, verbose = verbose)
+      }))
+      x <- filter(x, country = country, level = level, start = start, end = end)
+    }
     
-    zip          <- sprintf("%s/%s.zip", url, end)
-    files        <- c(paste0("data-",1:3,".csv"), paste0("rawdata-",1:3,".csv"), "src.csv")
-    names(files) <- gsub("\\.csv$", "", files)
-    
-    x <- read.zip(zip, files, cache = cache)
-    
-    src <- x[["src"]]
-    x   <- x[[name]]
+    else{
+      url <- endpoint("country/index.csv.gz")
+      map <- read.gz(url, dir = dir, verbose = verbose)
+      iso <- map$iso_alpha_3[
+        map$name %in% country |
+        map$iso_alpha_3 %in% country |
+        map$iso_alpha_2 %in% country |
+        map$iso_numeric %in% country ]
+      x <- data.table::rbindlist(fill = TRUE, lapply(iso, function(i){
+        url <- endpoint("country/", i, ".csv.gz")
+        read.gz(url, dir = dir, verbose = verbose)
+      }))
+      x <- filter(x, country = country, level = level, start = start, end = end)
+    }
     
   }
   
-  # check
-  if(nrow(x)==0)
-    return(NULL)
+  else{
+    
+    url <- sprintf("%s/%s%s", baseurl, vintage, ifelse(vintage>="2021-11-05", ".db.gz", ".zip"))
+    ext <- tools::file_ext(url)
+    if(ext=="zip"){
+      x <- read.zip(url, dir = dir, level = level, verbose = verbose)  
+      x <- filter(x, country = country, level = level, start = start, end = end)
+    }
+    if(ext=="gz"){
+      x <- read.db(url, dir = dir, country = country, level = level, start, end, verbose = verbose)
+    }
+    
+  }
+
+  # convert to data.table
+  x <- data.table::data.table(x)
   
   # date
   x$date <- as.Date(x$date)
@@ -159,32 +165,20 @@ covid19 <- function(country = NULL,
   
   # google mobility
   if(!is.null(gmr))
-    x <- google(x, level = level, url = gmr, cache = cache)
+    x <- google(x, level = level, url = gmr, dir = dir, verbose = verbose)
   
   # apple mobility
   if(!is.null(amr))
-    x <- apple(x, level = level, url = amr, cache = cache)
+    x <- apple(x, level = level, url = amr, dir = dir, verbose = verbose)
   
-  # group and order
-  x <- x %>%
-    dplyr::group_by_at("id") %>%
-    dplyr::arrange_at(c("id", "date"))
-
-  # src
-  attr(x, "src") <- try(cite(x, src))
-  
-  # cache
-  if(cache)
-    assign(cachekey, x, envir = cachedata)
-
   # verbose
   if(verbose){
     cat("We have invested a lot of time and effort in creating COVID-19 Data Hub, please cite the following when using it:\n")
     print(utils::citation("COVID19"))
-    cat("To retrieve citation and metadata of the data sources see ?covid19cite. To hide this message use 'verbose = FALSE'.\n")
+    cat("To hide this message use 'verbose = FALSE'.\n")
   }
   
   # return
-  return(filter(x, country = country, start = start, end = end))
+  data.frame(x)
 
 }

@@ -1,37 +1,26 @@
-apple <- function(x, level, url, cache){
+apple <- function(x, level, url, dir, verbose){
   
   # check
   if(is.null(x$key_apple_mobility))
     return(x)
   
-  # download
-  a <- read.csv(url, cache = cache)
+  a <- data.table::fread(url, encoding = "UTF-8", na.strings = "", header = TRUE)
   
-  # formatting
-  by <- c("geo_type", "region", "sub.region", "transportation_type")
-  cn <- colnames(a)
-  by <- by[by %in% cn]
-  cn <- (cn %in% by) | !is.na(as.Date(cn, format = "X%Y.%m.%d"))
   
-  a <- a[,cn] %>%
-    tidyr::pivot_longer(cols = -by, values_to = "value", names_to = "date") %>%
-    tidyr::pivot_wider(names_from = "transportation_type", values_from = "value") %>%
-    dplyr::mutate(date = as.Date(date, format = "X%Y.%m.%d"))
+  id.vars <-  c("region", "sub-region", "transportation_type")
+  measure.vars <- which(grepl("^\\d{4}-\\d{2}-\\d{2}$", colnames(a)))
+  a <- suppressWarnings(data.table::melt(a, id.vars = id.vars, measure.vars = measure.vars, variable.name = "date"))
+  a <- data.table::dcast(a, region + `sub-region` + date ~ transportation_type, value.var = "value")
   
   # date
   a$date <- as.Date(a$date)
   
   # key
-  a$key_apple_mobility <- gsub(", NA$", "", paste(a$region, a$sub.region, sep = ", "))
-  
-  # merge
-  x <- merge(x, a, by = c("date","key_apple_mobility"), all.x = TRUE)
-    
-  # drop 
-  rm <- c("geo_type", "region", "sub.region")
-  x  <- x[, setdiff(colnames(x), rm)]
-  
-  # return
-  return(x)
-  
+  a$key_apple_mobility <- a$region
+  idx <- which(!is.na(a$`sub-region`))
+  a$key_apple_mobility[idx] <- paste(a$region[idx], a$`sub-region`[idx], sep = ", ")
+
+  # return  
+  join(x, a, on = c("date" = "date", "key_apple_mobility" = "key_apple_mobility"))
+
 }

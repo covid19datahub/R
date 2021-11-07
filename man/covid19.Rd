@@ -12,13 +12,13 @@ covid19(
   level = 1,
   start = "2010-01-01",
   end = Sys.Date(),
-  raw = TRUE,
-  vintage = FALSE,
-  verbose = TRUE,
-  cache = TRUE,
+  vintage = NULL,
   wb = NULL,
   gmr = NULL,
-  amr = NULL
+  amr = NULL,
+  dir = tempdir(),
+  verbose = TRUE,
+  ...
 )
 }
 \arguments{
@@ -30,19 +30,19 @@ covid19(
 
 \item{end}{the end date of the period of interest.}
 
-\item{raw}{logical. Skip data cleaning? Default \code{TRUE}. See details.}
-
 \item{vintage}{logical. Retrieve the snapshot of the dataset that was generated at the \code{end} date instead of using the latest version. Default \code{FALSE}.}
-
-\item{verbose}{logical. Print data sources? Default \code{TRUE}.}
-
-\item{cache}{logical. Memory caching? Significantly improves performance on successive calls. Default \code{TRUE}.}
 
 \item{wb}{character vector of \href{https://data.worldbank.org}{World Bank} indicator codes. See details.}
 
 \item{gmr}{url to the \href{https://www.google.com/covid19/mobility/}{Google Mobility Report} dataset. See details.}
 
 \item{amr}{url to the \href{https://covid19.apple.com/mobility}{Apple Mobility Report} dataset. See details.}
+
+\item{dir}{folder to store downloads.}
+
+\item{verbose}{logical. Print data sources? Default \code{TRUE}.}
+
+\item{...}{not used.}
 }
 \value{
 Grouped \code{tibble} (\code{data.frame}). See the \href{https://covid19datahub.io/articles/doc/data.html}{dataset documentation}
@@ -110,9 +110,6 @@ amr <- "https://covid19-static.cdn-apple.com/covid19-mobility-data/"
 amr <- paste0(amr, "2023HotfixDev26/v3/en-us/applemobilitytrends-2021-01-01.csv")
 x   <- covid19(amr = amr)
 
-# Data sources
-s <- covid19cite(x)
-View(s)
 }
 
 }
