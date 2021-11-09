@@ -141,7 +141,7 @@ covid19 <- function(country = NULL,
   
   else{
     
-    url <- sprintf("%s/%s%s", baseurl, vintage, ifelse(vintage>="2021-11-05", ".db.gz", ".zip"))
+    url <- sprintf("%s/%s%s", baseurl, vintage, ifelse(vintage>="2021-11-13", ".db.gz", ".zip"))
     ext <- tools::file_ext(url)
     if(ext=="zip"){
       x <- read.zip(url, dir = dir, level = level, verbose = verbose)  
