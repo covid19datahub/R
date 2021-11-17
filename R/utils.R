@@ -1,10 +1,13 @@
+# Site URL
 baseurl <- "https://storage.covid19datahub.io"
 
+# Build endpoint
 endpoint <- function(...){
   ep <- paste0(list(...), collapse = "")
   paste(baseurl, ep, sep = "/")
 }
 
+# Generate local filename
 local <- function(..., dir, timestamp){
   file <- paste0(list(...), collapse = "/")
   file <- gsub("^https?://[^/]*/", "", file)
@@ -33,8 +36,10 @@ read.zip <- function(url, dir, level, verbose){
   }))
 }
 
-
+# Read SQLite database
 read.db <- function(url, dir, country, level, start, end, verbose){
+  if(!requireNamespace("RSQLite", quietly = TRUE))
+    stop("Package 'RSQLite' needed but not installed. Install with: install.packages('RSQLite')")
   level <- paste(level, collapse = "','")
   country <- paste(country, collapse = "','")
   sql <- sprintf("
@@ -58,19 +63,13 @@ read.db <- function(url, dir, country, level, start, end, verbose){
   return(x)
 }
 
-
+# Download and return local filename
 download <- function(url, dir, verbose, timestamp){
-  
-  # Exit if file already exists
   file <- local(url, dir = dir, timestamp = timestamp)
   if(file.exists(file)) 
     return(file)
-  
-  # Download
   tmp <- tempfile()
   utils::download.file(url, destfile = tmp, mode = "wb", quiet = !verbose)
-
-  # Extract in the output path
   ext <- tools::file_ext(url)
   if(ext=="gz")
     R.utils::gunzip(tmp, file)
@@ -78,12 +77,10 @@ download <- function(url, dir, verbose, timestamp){
     utils::unzip(tmp, exdir = file)
   else
     file <- NULL
-
-  # Return file path
   return(file)
-  
 }
 
+# Subset the data by country, level, and time range
 filter <- function(x, country, level, start, end){
   x <- x[x$date>=start & x$date<=end & x$administrative_area_level %in% level,]
   if(!is.null(country)){
@@ -95,8 +92,8 @@ filter <- function(x, country, level, start, end){
   return(x)
 }
 
+# Efficient left join
 join <- function(x, y, on){
   data.table::setnames(y, old = on, new = names(on))
   data.table::setcolorder(y[x, on = names(on)], unique(names(x), names(y)))
 }
-

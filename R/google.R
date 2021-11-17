@@ -32,7 +32,7 @@ google <- function(x, level, url, dir, verbose){
   
   # read
   g <- data.table::rbindlist(fill = TRUE, lapply(files, function(file){
-    g <- data.table::fread(file, encoding = "UTF-8", na.strings = "")
+    g <- data.table::fread(file, encoding = "UTF-8", na.strings = "", showProgress = verbose)
     if(backward){
       g$place_id <- paste(g$country_region_code, g$sub_region_1, g$sub_region_2, g$metro_area, sep = ", ")
       g$place_id <- gsub("(, (NA)?)+$", "", g$place_id)

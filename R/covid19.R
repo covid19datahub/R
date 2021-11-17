@@ -1,43 +1,41 @@
 #' COVID-19 Data Hub
 #'
-#' Download COVID-19 data across governmental sources at national, regional, and city level.
-#' Includes the time series of vaccines, tests, cases, deaths, recovered, hospitalizations, intensive therapy, 
-#' and policy measures by \href{https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker}{Oxford COVID-19 Government Response Tracker}.
-#' Provides a seamless integration with 
-#' \href{https://data.worldbank.org/}{World Bank Open Data}, 
-#' \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports}, 
-#' \href{https://covid19.apple.com/mobility}{Apple Mobility Reports}.
+#' Download COVID-19 data from \url{https://covid19datahub.io}
 #'
-#' @param country vector of country names or \href{https://github.com/covid19datahub/COVID19/blob/master/inst/extdata/db/ISO.csv}{ISO codes} (alpha-2, alpha-3 or numeric).
+#' @param country vector of country names or \href{https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes}{ISO codes} (ISO 3166-1 Alpha-2 code, Alpha-3 code, or numeric code). By default, downloads data for all countries.
 #' @param level integer. Granularity level. 1: country-level data. 2: state-level data. 3: lower-level data.
-#' @param start the start date of the period of interest.
-#' @param end the end date of the period of interest.
-#' @param vintage logical. Retrieve the snapshot of the dataset that was generated at the \code{end} date instead of using the latest version. Default \code{FALSE}.
+#' @param start,end the start and the end date of the period of interest. The data are subsetted to match this time range.
+#' @param vintage date. This parameter allows to retrieve the snapshot of the dataset that was available on the given date. This typically differs from subsetting the latest data, as most governments are updating the data retroactively. Available since 2020-04-14.
 #' @param wb character vector of \href{https://data.worldbank.org}{World Bank} indicator codes. See details.
 #' @param gmr url to the \href{https://www.google.com/covid19/mobility/}{Google Mobility Report} dataset. See details.
 #' @param amr url to the \href{https://covid19.apple.com/mobility}{Apple Mobility Report} dataset. See details.
-#' @param dir folder to store downloads.
-#' @param verbose logical. Print data sources? Default \code{TRUE}. 
-#' @param ... not used.
+#' @param dir folder where the data files are to be downloaded. 
+#' @param verbose logical. Print on progress? Default \code{TRUE}. 
+#' @param ... backward compatibility, not used.
 #'
 #' @details 
-#' If \code{raw=FALSE}, the raw data are cleaned by filling missing dates with \code{NA} values. 
-#' This ensures that all locations share the same grid of dates and no single day is skipped. 
-#' Then, \code{NA} values are replaced with the previous non-\code{NA} value or \code{0}.
 #' 
-#' The dataset can be extended with \href{https://data.worldbank.org}{World Bank Open Data} via the argument \code{wb}, a character vector of indicator codes.
-#' The codes can be found by inspecting the corresponding URL. For example, the code of the GDP indicator available at \url{https://data.worldbank.org/indicator/NY.GDP.MKTP.CD} is \code{NY.GDP.MKTP.CD}.
-#' The latest data available between the \code{start} and \code{end} date are downloaded.
+#' Country-level covariates by \href{https://data.worldbank.org}{World Bank Open Data} can be downloaded via the argument \code{wb}.
+#' This is a character vector of indicator codes to download.
+#' The codes can be found by inspecting the corresponding URL. 
+#' For example, the code of the indicator "Hospital beds (per 1,000 people)" available at \url{https://data.worldbank.org/indicator/SH.MED.BEDS.ZS} is \code{SH.MED.BEDS.ZS}.
+#' The indicators are typically available at a yearly frequency. 
+#' This function returns the latest data available between the \code{start} and the \code{end} date.
+#' See the table at the bottom of \href{https://datatopics.worldbank.org/universal-health-coverage/coronavirus/}{this page} for suggested indicators.
 #'
-#' The dataset can be extended with \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports} via the argument \code{gmr}, the url to the Google CSV file.
-#' At the time of writing, the CSV is available \href{https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv}{here}. 
+#' Mobility data by \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports} can be downloaded via the argument \code{gmr}.
+#' This is the url to the Google "CSV by geographic area" ZIP folder. 
+#' At the time of writing, the url is \url{https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip}.
+#' As the link has been stable since the beginning of the pandemic, the function accepts \code{gmr=TRUE} to automatically use this link.
 #' 
-#' The dataset can be extended with \href{https://covid19.apple.com/mobility}{Apple Mobility Reports} via the argument \code{amr}, the url to the Apple CSV file.
-#' At the time of writing, the CSV is available \href{https://covid19-static.cdn-apple.com/covid19-mobility-data/2023HotfixDev26/v3/en-us/applemobilitytrends-2021-01-01.csv}{here}.
+#' Mobility data by \href{https://covid19.apple.com/mobility}{Apple Mobility Reports} can be downloaded via the argument \code{amr}.
+#' This is the url to the Apple "All CSV data" file. This url is changing constantly. 
+#' Consider downloading the data file from the website first, and then set \code{amr="path/to/file.csv"}
 #'
-#' Refer to \href{https://covid19datahub.io/articles/data.html}{this webpage} for more details on the data.
+#' Refer to \href{https://covid19datahub.io/reference/index.html}{this webpage} for the details on the data sources, and 
+#' \href{https://covid19datahub.io/news/index.html}{see the changelog} for the latest news about the dataset.
 #'
-#' @return Grouped \code{tibble} (\code{data.frame}). See the \href{https://covid19datahub.io/articles/doc/data.html}{dataset documentation}
+#' @return \code{data.frame}. See the \href{https://covid19datahub.io/articles/docs.html}{dataset documentation}
 #'
 #' @examples
 #' \dontrun{
@@ -48,21 +46,27 @@
 #' # Worldwide data by state
 #' x <- covid19(level = 2)
 #'
-#' # Specific country data by city
-#' x <- covid19(c("Italy","US"), level = 3)
+#' # Data for specific countries by county/province
+#' x <- covid19(c("Italy", "US"), level = 3)
 #' 
-#' # Merge with World Bank data. It may take some time...
+#' # Retrieve data that were available on 2020-04-14
+#' x <- covid19(vintage = "2020-04-14")
+#' 
+#' # Download the files in the folder "data"
+#' dir.create("data")
+#' x <- covid19(dir = "data")
+#' 
+#' # World Bank data
 #' wb <- c("gdp" = "NY.GDP.MKTP.CD", "hosp_beds" = "SH.MED.BEDS.ZS")
 #' x  <- covid19(wb = wb)
 #' 
-#' # Merge with Google Mobility Reports. It may take some time...
-#' gmr <- "https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv"
-#' x   <- covid19(gmr = gmr)
+#' # Google Mobility Reports
+#' x <- covid19(gmr = TRUE)
 #' 
-#' # Merge with Apple Mobility Reports. It may take some time...
-#' amr <- "https://covid19-static.cdn-apple.com/covid19-mobility-data/"
-#' amr <- paste0(amr, "2023HotfixDev26/v3/en-us/applemobilitytrends-2021-01-01.csv")
-#' x   <- covid19(amr = amr)
+#' # Apple Mobility Reports
+#' # - download the CSV data file from https://covid19.apple.com/mobility
+#' # - use the path to the file that you have downloaded
+#' x <- covid19(amr = "path/to/file.csv")
 #' 
 #' }
 #'
@@ -141,7 +145,7 @@ covid19 <- function(country = NULL,
   
   else{
     
-    url <- sprintf("%s/%s%s", baseurl, vintage, ifelse(vintage>="2021-11-13", ".db.gz", ".zip"))
+    url <- sprintf("%s/%s%s", baseurl, vintage, ifelse(vintage>="2021-11-15", ".db.gz", ".zip"))
     ext <- tools::file_ext(url)
     if(ext=="zip"){
       x <- read.zip(url, dir = dir, level = level, verbose = verbose)  
@@ -153,32 +157,24 @@ covid19 <- function(country = NULL,
     
   }
 
-  # convert to data.table
+  x$date <- as.Date(x$date)
   x <- data.table::data.table(x)
   
-  # date
-  x$date <- as.Date(x$date)
-  
-  # world bank
   if(!is.null(wb))
     x <- worldbank(x, indicator = wb, start = start, end = end)
   
-  # google mobility
   if(!is.null(gmr))
     x <- google(x, level = level, url = gmr, dir = dir, verbose = verbose)
   
-  # apple mobility
   if(!is.null(amr))
     x <- apple(x, level = level, url = amr, dir = dir, verbose = verbose)
   
-  # verbose
   if(verbose){
     cat("We have invested a lot of time and effort in creating COVID-19 Data Hub, please cite the following when using it:\n")
     print(utils::citation("COVID19"))
     cat("To hide this message use 'verbose = FALSE'.\n")
   }
   
-  # return
-  data.frame(x)
-
+  return(data.frame(x))
+  
 }

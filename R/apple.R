@@ -5,7 +5,7 @@ apple <- function(x, level, url, dir, verbose){
     return(x)
   
   # read
-  a <- data.table::fread(url, encoding = "UTF-8", na.strings = "", header = TRUE)
+  a <- data.table::fread(url, encoding = "UTF-8", na.strings = "", header = TRUE, showProgress = verbose)
   
   # format
   id.vars <-  c("region", "sub-region", "transportation_type")
