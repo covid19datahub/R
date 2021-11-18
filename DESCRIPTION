@@ -7,7 +7,7 @@ Authors@R: c(
     person(given = "David", family = "Ardia", role = c("ctb"), comment = c(ORCID = "0000-0003-2823-782X"))
   )
 Description: Provides a daily summary of COVID-19 cases, deaths, recovered, tests,
-  vaccinations, and hospitalizations for 230+ countries, 760+ states, 
+  vaccinations, and hospitalizations for 230+ countries, 760+ regions, 
   and 12000+ administrative divisions of lower level. 
   Includes policy measures, mobility data, and geospatial identifiers.
   Data source: COVID-19 Data Hub <https://covid19datahub.io>.
