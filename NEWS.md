@@ -1,3 +1,4 @@
 # COVID19 3.0.0
 
-* Added a `NEWS.md` file to track changes to the package.
+* Compatible with [COVID-19 Data Hub v3](https://covid19datahub.io/news/index.html).
+
