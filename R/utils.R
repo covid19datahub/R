@@ -20,7 +20,7 @@ local <- function(..., dir, timestamp){
 # Read GZ files
 read.gz <- function(url, dir, verbose){
   file <- download(url, dir = dir, verbose = verbose, timestamp = TRUE)
-  data.table::fread(file, showProgress = verbose, encoding = "UTF-8", na.strings = "")
+  data.table::fread(file, showProgress = verbose, encoding = "UTF-8", na.strings = "", keepLeadingZeros = TRUE)
 }
 
 # Read vintage ZIP
@@ -29,7 +29,7 @@ read.zip <- function(url, dir, level, verbose){
   data.table::rbindlist(fill = TRUE, lapply(level, function(i){
     rawdata <- sprintf("%s/rawdata-%s.csv", file, i)
     dt <- try(data.table::fread(
-      rawdata, showProgress = verbose, encoding = "UTF-8", na.strings = ""), 
+      rawdata, showProgress = verbose, encoding = "UTF-8", na.strings = "", keepLeadingZeros = TRUE), 
       silent = !verbose)
     if("try-error" %in% class(dt)) return(NULL)
     return(dt)
