@@ -32,9 +32,9 @@ covid19(
 
 \item{wb}{character vector of \href{https://data.worldbank.org}{World Bank} indicator codes. See details.}
 
-\item{gmr}{url to the \href{https://www.google.com/covid19/mobility/}{Google Mobility Report} dataset. See details.}
+\item{gmr}{link to the \href{https://www.google.com/covid19/mobility/}{Google Mobility Report} dataset, or \code{TRUE}. See details.}
 
-\item{amr}{url to the \href{https://covid19.apple.com/mobility}{Apple Mobility Report} dataset. See details.}
+\item{amr}{link to the \href{https://covid19.apple.com/mobility}{Apple Mobility Report} dataset. See details.}
 
 \item{dir}{folder where the data files are to be downloaded.}
 
@@ -58,12 +58,12 @@ This function returns the latest data available between the \code{start} and the
 See the table at the bottom of \href{https://datatopics.worldbank.org/universal-health-coverage/coronavirus/}{this page} for suggested indicators.
 
 Mobility data by \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports} can be downloaded via the argument \code{gmr}.
-This is the url to the Google "CSV by geographic area" ZIP folder. 
-At the time of writing, the url is \url{https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip}.
+This is the link to the Google "CSV by geographic area" ZIP folder. 
+At the time of writing, the link is \url{https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip}.
 As the link has been stable since the beginning of the pandemic, the function accepts \code{gmr=TRUE} to automatically use this link.
 
 Mobility data by \href{https://covid19.apple.com/mobility}{Apple Mobility Reports} can be downloaded via the argument \code{amr}.
-This is the url to the Apple "All CSV data" file. This url is changing constantly. 
+This is the link to the Apple "All CSV data" file. This link is changing constantly. 
 Consider downloading the data file from the website first, and then set \code{amr="path/to/file.csv"}
 
 Refer to \href{https://covid19datahub.io/reference/index.html}{this webpage} for the details on the data sources, and 

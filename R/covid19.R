@@ -7,8 +7,8 @@
 #' @param start,end the start and the end date of the period of interest. The data are subsetted to match this time range.
 #' @param vintage date. This parameter allows to retrieve the snapshot of the dataset that was available on the given date. This typically differs from subsetting the latest data, as most governments are updating the data retroactively. Available since 2020-04-14.
 #' @param wb character vector of \href{https://data.worldbank.org}{World Bank} indicator codes. See details.
-#' @param gmr url to the \href{https://www.google.com/covid19/mobility/}{Google Mobility Report} dataset. See details.
-#' @param amr url to the \href{https://covid19.apple.com/mobility}{Apple Mobility Report} dataset. See details.
+#' @param gmr link to the \href{https://www.google.com/covid19/mobility/}{Google Mobility Report} dataset, or \code{TRUE}. See details.
+#' @param amr link to the \href{https://covid19.apple.com/mobility}{Apple Mobility Report} dataset. See details.
 #' @param dir folder where the data files are to be downloaded. 
 #' @param verbose logical. Print on progress? Default \code{TRUE}. 
 #' @param ... backward compatibility, not used.
@@ -24,12 +24,12 @@
 #' See the table at the bottom of \href{https://datatopics.worldbank.org/universal-health-coverage/coronavirus/}{this page} for suggested indicators.
 #'
 #' Mobility data by \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports} can be downloaded via the argument \code{gmr}.
-#' This is the url to the Google "CSV by geographic area" ZIP folder. 
-#' At the time of writing, the url is \url{https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip}.
+#' This is the link to the Google "CSV by geographic area" ZIP folder. 
+#' At the time of writing, the link is \url{https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip}.
 #' As the link has been stable since the beginning of the pandemic, the function accepts \code{gmr=TRUE} to automatically use this link.
 #' 
 #' Mobility data by \href{https://covid19.apple.com/mobility}{Apple Mobility Reports} can be downloaded via the argument \code{amr}.
-#' This is the url to the Apple "All CSV data" file. This url is changing constantly. 
+#' This is the link to the Apple "All CSV data" file. This link is changing constantly. 
 #' Consider downloading the data file from the website first, and then set \code{amr="path/to/file.csv"}
 #'
 #' Refer to \href{https://covid19datahub.io/reference/index.html}{this webpage} for the details on the data sources, and 

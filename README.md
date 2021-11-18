@@ -4,14 +4,7 @@
 
 ![](https://www.r-pkg.org/badges/version/COVID19) ![](https://cranlogs.r-pkg.org/badges/last-month/COVID19) [![DOI](https://joss.theoj.org/papers/10.21105/joss.02376/status.svg)](https://doi.org/10.21105/joss.02376)
 
-Download COVID-19 data across governmental sources at national, regional, and city level, as described in [Guidotti and Ardia (2020)](https://www.doi.org/10.21105/joss.02376). Includes the time series of vaccines, tests, cases, deaths, recovered, hospitalizations, intensive therapy, and policy measures by [Oxford COVID-19 Government Response Tracker](https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker). Please agree to the [Terms of Use](https://covid19datahub.io/LICENSE.html) and cite the following reference when using it:
-
-**Reference**
-
-Guidotti, E., Ardia, D., (2020).      
-COVID-19 Data Hub       
-_Journal of Open Source Software_, **5**(51):2376   
-[https://doi.org/10.21105/joss.02376](https://doi.org/10.21105/joss.02376) 
+Provides a daily summary of COVID-19 cases, deaths, recovered, tests, vaccinations, and hospitalizations for 230+ countries, 760+ regions, and 12000+ administrative divisions of lower level.  Includes policy measures, mobility data, and geospatial identifiers. Data source: COVID-19 Data Hub https://covid19datahub.io
 
 ## Quickstart
 
@@ -25,61 +18,98 @@ library("COVID19")
 
 ## Usage
 
-### Download the data
+The only function in the package is `covid19()`. 
 
-See the full documentation by typing `?covid19`
+By default, the function downloads worldwide data by country:
 
-```r
-# Worldwide data by country
+```R
 x <- covid19()
+```
 
-# Worldwide data by state
+### Level
+
+The argument `level` specifies the granularity of the data:
+
+- 1: country-level data
+- 2: state-level data
+- 3: lower-level data
+
+Download worldwide data by state:
+
+```R
 x <- covid19(level = 2)
-
-# Specific country data by city
-x <- covid19(c("Italy","US"), level = 3)
 ```
 
-### Merge with World Bank Open Data
+### Country
 
-The dataset can be extended with [World Bank Open Data](https://data.worldbank.org/) via the argument `wb`, a character vector of indicator codes. The codes can be found by inspecting the corresponding URL. For example, the code of the GDP indicator available at https://data.worldbank.org/indicator/NY.GDP.MKTP.CD is `NY.GDP.MKTP.CD`. 
+The argument `country` filters the data by country. This is a list of country names or [ISO codes](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes) (ISO 3166-1 Alpha-2 code, Alpha-3 code, or numeric code). 
+
+Download data for Italy and Unites States at county/province level:
 
 ```R
-wb <- c("gdp" = "NY.GDP.MKTP.CD", "hosp_beds" = "SH.MED.BEDS.ZS")
-x  <- covid19(wb = wb)
+x <- covid19(country = c("Italy", "US"), level = 3)
 ```
 
-### Merge with Google Mobility Reports
+### Time range
 
-The dataset can be extended with [Google Mobility Reports](https://www.google.com/covid19/mobility/) via the argument `gmr`, the url to the Google CSV file. At the time of writing, the CSV is available at:
+The arguments `start` and `end` specify the period of interest. The data are subsetted to match this time range.
+
+Download national-level data for United States from 01 October 2021 to 01 November 2021:
 
 ```R
-gmr <- "https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv"
-x   <- covid19(gmr = gmr)
+x <- covid19("US", start = "2021-10-01", end = "2021-11-01")
 ```
 
-### Merge with Apple Mobility Reports
+### Vintage
 
-The dataset can be extended with [Apple Mobility Reports](https://covid19.apple.com/mobility) via the argument `amr`, the url to the Apple CSV file. At the time of writing, the CSV is available at:
+The parameter `vintage` allows to retrieve the snapshot of the dataset that was available on the given date. This typically differs from subsetting the latest data, as most governments are updating the data retroactively. Available since 2020-04-14.
+
+Retrieve data that were available on 2020-04-14:
 
 ```R
-amr <- "https://covid19-static.cdn-apple.com/covid19-mobility-data/"
-amr <- paste0(amr, "2023HotfixDev26/v3/en-us/applemobilitytrends-2021-01-01.csv")
-x   <- covid19(amr = amr)
+x <- covid19(vintage = "2020-04-14")
 ```
 
-### Data sources
+### Store the data
 
-Data sources are stored in the `src` attribute.
+The argument `dir` specifies the folder where the data files are to be downloaded. By default this is a temporary folder. 
+
+Download the files in the folder `data`:
 
 ```R
-s <- covid19cite(x)
-View(s)
+dir.create("data")
+x <- covid19(dir = "data")
 ```
 
-### Additional information
+### World Bank Open Data
 
-Find out more at https://covid19datahub.io
+Country-level covariates by [World Bank Open Data](https://data.worldbank.org/) can be downloaded via the argument `wb`. This is a character vector of indicator codes to download. The codes can be found by inspecting the corresponding URL. For example, the code of the indicator "Hospital beds (per 1,000 people)" available at https://data.worldbank.org/indicator/SH.MED.BEDS.ZS is `SH.MED.BEDS.ZS`. The indicators are typically available at a yearly frequency. This function returns the latest data available between the `start` and the `end` date. See the table at the bottom of [this page](https://datatopics.worldbank.org/universal-health-coverage/coronavirus/) for suggested indicators.
+
+Download GDP and and the number of hospital beds per 1,000 people:
+
+```R
+x <- covid19(wb = c("gdp" = "NY.GDP.MKTP.CD", "hosp_beds" = "SH.MED.BEDS.ZS"))
+```
+
+### Google Mobility Reports
+
+Mobility data by [Google Mobility Reports](https://www.google.com/covid19/mobility/) can be downloaded via the argument `gmr`. This is the link to the Google "CSV by geographic area" ZIP folder. At the time of writing, the link is https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip. As the link has been stable since the beginning of the pandemic, the function accepts `gmr=TRUE` to automatically use this link.
+
+```R
+x <- covid19(gmr = TRUE)
+```
+
+### Apple Mobility Reports
+
+Mobility data by [Apple Mobility Reports](https://covid19.apple.com/mobility) can be downloaded via the argument `amr`. This is the link to the Apple "All CSV data" file. This link is changing constantly. Consider downloading the data file from the website first, and then set `amr="path/to/file.csv"`.
+
+```R
+x <- covid19(amr = "path/to/file.csv")
+```
+
+## Documentation
+
+See the full documentation [online](https://cran.r-project.org/package=COVID19/COVID19.pdf), or in R by typing `?covid19`
 
 ## Cite as
 
