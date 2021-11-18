@@ -70,7 +70,7 @@ Retrieve the data that were available on 15 May, 2020:
 x <- covid19(vintage = "2020-05-15")
 ```
 
-### Store the data
+### Download folder
 
 The argument `dir` specifies the folder where the data files are to be downloaded. By default this is a temporary folder. 
 
