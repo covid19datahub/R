@@ -15,7 +15,7 @@
 #'
 #' @details 
 #' 
-#' Country-level covariates by \href{https://data.worldbank.org}{World Bank Open Data} can be downloaded via the argument \code{wb}.
+#' Country-level covariates by \href{https://data.worldbank.org}{World Bank Open Data} can be added via the argument \code{wb}.
 #' This is a character vector of indicator codes to download.
 #' The codes can be found by inspecting the corresponding URL. 
 #' For example, the code of the indicator "Hospital beds (per 1,000 people)" available at \url{https://data.worldbank.org/indicator/SH.MED.BEDS.ZS} is \code{SH.MED.BEDS.ZS}.
@@ -23,12 +23,12 @@
 #' This function returns the latest data available between the \code{start} and the \code{end} date.
 #' See the table at the bottom of \href{https://datatopics.worldbank.org/universal-health-coverage/coronavirus/}{this page} for suggested indicators.
 #'
-#' Mobility data by \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports} can be downloaded via the argument \code{gmr}.
+#' Mobility data by \href{https://www.google.com/covid19/mobility/}{Google Mobility Reports} can be added via the argument \code{gmr}.
 #' This is the link to the Google "CSV by geographic area" ZIP folder. 
 #' At the time of writing, the link is \url{https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip}.
 #' As the link has been stable since the beginning of the pandemic, the function accepts \code{gmr=TRUE} to automatically use this link.
 #' 
-#' Mobility data by \href{https://covid19.apple.com/mobility}{Apple Mobility Reports} can be downloaded via the argument \code{amr}.
+#' Mobility data by \href{https://covid19.apple.com/mobility}{Apple Mobility Reports} can be added via the argument \code{amr}.
 #' This is the link to the Apple "All CSV data" file. This link is changing constantly. 
 #' Consider downloading the data file from the website first, and then set \code{amr="path/to/file.csv"}
 #'
@@ -49,8 +49,8 @@
 #' # Data for specific countries by county/province
 #' x <- covid19(c("Italy", "US"), level = 3)
 #' 
-#' # Retrieve data that were available on 2020-04-14
-#' x <- covid19(vintage = "2020-04-14")
+#' # Retrieve the data that were available on 15 May, 2020
+#' x <- covid19(vintage = "2020-05-15")
 #' 
 #' # Download the files in the folder "data"
 #' dir.create("data")

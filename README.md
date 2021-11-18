@@ -62,12 +62,12 @@ x <- covid19("US", start = "2021-10-01", end = "2021-11-01")
 
 ### Vintage
 
-The parameter `vintage` allows to retrieve the snapshot of the dataset that was available on the given date. This typically differs from subsetting the latest data, as most governments are updating the data retroactively. Available since 2020-04-14.
+The parameter `vintage` allows to retrieve the snapshot of the dataset that was available on the given date. This typically differs from subsetting the latest data, as most governments are updating the data retroactively. Available since 14 April, 2020.
 
-Retrieve data that were available on 2020-04-14:
+Retrieve the data that were available on 15 May, 2020:
 
 ```R
-x <- covid19(vintage = "2020-04-14")
+x <- covid19(vintage = "2020-05-15")
 ```
 
 ### Store the data
@@ -83,9 +83,7 @@ x <- covid19(dir = "data")
 
 ### World Bank Open Data
 
-Country-level covariates by [World Bank Open Data](https://data.worldbank.org/) can be downloaded via the argument `wb`. This is a character vector of indicator codes to download. The codes can be found by inspecting the corresponding URL. For example, the code of the indicator "Hospital beds (per 1,000 people)" available at https://data.worldbank.org/indicator/SH.MED.BEDS.ZS is `SH.MED.BEDS.ZS`. The indicators are typically available at a yearly frequency. This function returns the latest data available between the `start` and the `end` date. See the table at the bottom of [this page](https://datatopics.worldbank.org/universal-health-coverage/coronavirus/) for suggested indicators.
-
-Download GDP and and the number of hospital beds per 1,000 people:
+Country-level covariates by [World Bank Open Data](https://data.worldbank.org/) can be added via the argument `wb`. This is a character vector of indicator codes to download. The codes can be found by inspecting the corresponding URL. For example, the code of the indicator "Hospital beds (per 1,000 people)" available at https://data.worldbank.org/indicator/SH.MED.BEDS.ZS is `SH.MED.BEDS.ZS`. The indicators are typically available at a yearly frequency. This function returns the latest data available between the `start` and the `end` date. See the table at the bottom of [this page](https://datatopics.worldbank.org/universal-health-coverage/coronavirus/) for suggested indicators. Example using GDP and number of hospital beds:
 
 ```R
 x <- covid19(wb = c("gdp" = "NY.GDP.MKTP.CD", "hosp_beds" = "SH.MED.BEDS.ZS"))
@@ -93,7 +91,7 @@ x <- covid19(wb = c("gdp" = "NY.GDP.MKTP.CD", "hosp_beds" = "SH.MED.BEDS.ZS"))
 
 ### Google Mobility Reports
 
-Mobility data by [Google Mobility Reports](https://www.google.com/covid19/mobility/) can be downloaded via the argument `gmr`. This is the link to the Google "CSV by geographic area" ZIP folder. At the time of writing, the link is https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip. As the link has been stable since the beginning of the pandemic, the function accepts `gmr=TRUE` to automatically use this link.
+Mobility data by [Google Mobility Reports](https://www.google.com/covid19/mobility/) can be added via the argument `gmr`. This is the link to the Google "CSV by geographic area" ZIP folder. At the time of writing, the link is https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip. As the link has been stable since the beginning of the pandemic, the function accepts `gmr=TRUE` to automatically use this link.
 
 ```R
 x <- covid19(gmr = TRUE)
@@ -101,7 +99,7 @@ x <- covid19(gmr = TRUE)
 
 ### Apple Mobility Reports
 
-Mobility data by [Apple Mobility Reports](https://covid19.apple.com/mobility) can be downloaded via the argument `amr`. This is the link to the Apple "All CSV data" file. This link is changing constantly. Consider downloading the data file from the website first, and then set `amr="path/to/file.csv"`.
+Mobility data by [Apple Mobility Reports](https://covid19.apple.com/mobility) can be added via the argument `amr`. This is the link to the Apple "All CSV data" file. This link is changing constantly. Consider downloading the data file from the website first, and then set `amr="path/to/file.csv"`.
 
 ```R
 x <- covid19(amr = "path/to/file.csv")
