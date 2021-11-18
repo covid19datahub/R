@@ -42,7 +42,7 @@ x <- covid19(level = 2)
 
 ### Country
 
-The argument `country` filters the data by country. This is a list of country names or [ISO codes](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes) (ISO 3166-1 Alpha-2 code, Alpha-3 code, or numeric code). 
+The argument `country` filters the data by country. This is a vector of country names or [ISO codes](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes) (ISO 3166-1 Alpha-2 code, Alpha-3 code, or numeric code). 
 
 Download data for Italy and Unites States at county/province level:
 
