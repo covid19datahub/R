@@ -15,7 +15,6 @@ License: MIT + file LICENSE
 URL: https://covid19datahub.io
 BugReports: https://github.com/covid19datahub/COVID19/issues
 Encoding: UTF-8
-LazyData: true
 Imports: tools, utils, R.utils, data.table
 Suggests: RSQLite, wbstats (>= 1.0.0)
 RoxygenNote: 7.1.2
