@@ -4,6 +4,16 @@ apple <- function(x, level, url, dir, verbose){
   if(is.null(x$key_apple_mobility))
     return(x)
   
+  # sanitize url
+  if(is.logical(url)){
+    if(!url) return(x)
+    jurl <- "https://covid19-static.cdn-apple.com/covid19-mobility-data/current/v3/index.json"
+    json <- readLines(jurl, warn = FALSE)
+    base <- gsub('^(.*)basePath":"(.*?)"(.*)$', "\\2", json)
+    csv <- gsub('^(.*)csvPath":"(.*?)"(.*)$', "\\2", json)
+    url <- paste0("https://covid19-static.cdn-apple.com", base, csv)
+  }
+  
   # read
   a <- data.table::fread(url, encoding = "UTF-8", na.strings = "", header = TRUE, showProgress = verbose)
   

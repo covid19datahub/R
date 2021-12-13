@@ -8,7 +8,7 @@
 #' @param vintage date. This parameter allows to retrieve the snapshot of the dataset that was available on the given date. This typically differs from subsetting the latest data, as most governments are updating the data retroactively. Available since 2020-04-14.
 #' @param wb character vector of \href{https://data.worldbank.org}{World Bank} indicator codes. See details.
 #' @param gmr link to the \href{https://www.google.com/covid19/mobility/}{Google Mobility Report} dataset, or \code{TRUE}. See details.
-#' @param amr link to the \href{https://covid19.apple.com/mobility}{Apple Mobility Report} dataset. See details.
+#' @param amr link to the \href{https://covid19.apple.com/mobility}{Apple Mobility Report} dataset, or \code{TRUE}. See details.
 #' @param dir folder where the data files are to be downloaded. 
 #' @param verbose logical. Print on progress? Default \code{TRUE}. 
 #' @param ... backward compatibility, not used.
@@ -30,7 +30,8 @@
 #' 
 #' Mobility data by \href{https://covid19.apple.com/mobility}{Apple Mobility Reports} can be added via the argument \code{amr}.
 #' This is the link to the Apple "All CSV data" file. This link is changing constantly. 
-#' Consider downloading the data file from the website first, and then set \code{amr="path/to/file.csv"}
+#' Consider downloading the data file from the website first, and then set \code{amr="path/to/file.csv"}.
+#' If \code{amr=TRUE} is provided, the function tries to detect the latest URL from \href{https://covid19-static.cdn-apple.com/covid19-mobility-data/current/v3/index.json}{this endpoint}.
 #'
 #' Refer to \href{https://covid19datahub.io/reference/index.html}{this webpage} for the details on the data sources, and 
 #' \href{https://covid19datahub.io/news/index.html}{see the changelog} for the latest news about the dataset.
