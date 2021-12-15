@@ -65,9 +65,7 @@
 #' x <- covid19(gmr = TRUE)
 #' 
 #' # Apple Mobility Reports
-#' # - download the CSV data file from https://covid19.apple.com/mobility
-#' # - use the path to the file that you have downloaded
-#' x <- covid19(amr = "path/to/file.csv")
+#' x <- covid19(amr = TRUE)
 #' 
 #' }
 #'
