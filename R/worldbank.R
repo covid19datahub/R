@@ -8,6 +8,10 @@ worldbank <- function(x, indicator, start, end){
   start <- format(as.Date(start), "%Y")
   end   <- format(as.Date(end), "%Y")
   
+  # set names
+  if(is.null(names(indicator)))
+    names(indicator) <- indicator
+  
   # download
   w <- wbstats::wb_data(indicator = indicator, start_date = start, end_date = end, return_wide = FALSE)
   
