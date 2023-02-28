@@ -27,10 +27,8 @@
 #' At the time of writing, the link is \url{https://www.gstatic.com/covid19/mobility/Region_Mobility_Report_CSVs.zip}.
 #' As the link has been stable since the beginning of the pandemic, the function accepts \code{gmr=TRUE} to automatically use this link.
 #' 
-#' As of April 14, 2022, Apple is no longer providing COVID-19 mobility trends reports.
-#' Previously, mobility data by \href{https://covid19.apple.com/mobility}{Apple Mobility Reports} could be added via the argument \code{amr}.
-#' This is the link to the Apple "All CSV data" file. This link is changing constantly. 
-#' Consider downloading the data file from the website first, and then set \code{amr="path/to/file.csv"}.
+#' As of April 14, 2022, Apple is no longer providing COVID-19 \href{https://covid19.apple.com/mobility}{mobility trends reports}.
+#' If you have downloaded the data file previously, you can still use it by setting \code{amr="path/to/file.csv"}.
 #'
 #' Refer to \href{https://covid19datahub.io/reference/index.html}{this webpage} for the details on the data sources, and 
 #' \href{https://covid19datahub.io/news/index.html}{see the changelog} for the latest news about the dataset.
@@ -64,7 +62,7 @@
 #' x <- covid19(gmr = TRUE)
 #' 
 #' # Apple Mobility Reports
-#' x <- covid19(amr = TRUE)
+#' x <- covid19(amr = "path/to/file.csv")
 #' 
 #' }
 #'

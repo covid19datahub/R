@@ -83,7 +83,7 @@ x <- covid19(dir = "data")
 
 ### World Bank Open Data
 
-Country-level covariates by [World Bank Open Data](https://data.worldbank.org/) can be added via the argument `wb`. This is a character vector of indicator codes to download. The codes can be found by inspecting the corresponding URL. For example, the code of the indicator "Hospital beds (per 1,000 people)" available at https://data.worldbank.org/indicator/SH.MED.BEDS.ZS is `SH.MED.BEDS.ZS`. The indicators are typically available at a yearly frequency. This function returns the latest data available between the `start` and the `end` date. See the table at the bottom of [this page](https://datatopics.worldbank.org/universal-health-coverage/coronavirus/) for suggested indicators. Example using GDP and number of hospital beds:
+Country-level covariates by [World Bank Open Data](https://data.worldbank.org/) can be added via the argument `wb`. This is a character vector of indicator codes to download. The codes can be found by inspecting the corresponding URL. For example, the code of the indicator "Hospital beds (per 1,000 people)" available at https://data.worldbank.org/indicator/SH.MED.BEDS.ZS is `SH.MED.BEDS.ZS`. The indicators are typically available at a yearly frequency. This function returns the latest data available between the `start` and the `end` date. Example using GDP and number of hospital beds:
 
 ```R
 x <- covid19(wb = c("gdp" = "NY.GDP.MKTP.CD", "hosp_beds" = "SH.MED.BEDS.ZS"))
@@ -99,10 +99,10 @@ x <- covid19(gmr = TRUE)
 
 ### Apple Mobility Reports
 
-Mobility data by [Apple Mobility Reports](https://covid19.apple.com/mobility) can be added via the argument `amr`. This is the link to the Apple "All CSV data" file. This link is changing constantly. Consider downloading the data file from the website first, and then set `amr="path/to/file.csv"`. If `amr=TRUE` is provided, the function tries to detect the latest URL from [this endpoint](https://covid19-static.cdn-apple.com/covid19-mobility-data/current/v3/index.json).
+As of April 14, 2022, Apple is no longer providing COVID-19 [mobility trends reports](https://covid19.apple.com/mobility). If you have downloaded the data file previously, you can still use it by setting `amr="path/to/file.csv"`.
 
 ```R
-x <- covid19(amr = TRUE)
+x <- covid19(amr = "path/to/file.csv")
 ```
 
 ## Documentation
