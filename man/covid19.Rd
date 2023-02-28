@@ -116,4 +116,6 @@ x <- covid19(amr = TRUE)
 }
 \references{
 Guidotti, E., Ardia, D., (2020), "COVID-19 Data Hub", Journal of Open Source Software 5(51):2376, \doi{10.21105/joss.02376}.
+
+Guidotti, E., (2022), "A worldwide epidemiological database for COVID-19 at fine-grained spatial resolution", Sci Data 9(1):112, \doi{10.1038/s41597-022-01245-1}.
 }

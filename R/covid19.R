@@ -73,6 +73,8 @@
 #'
 #' @references 
 #' Guidotti, E., Ardia, D., (2020), "COVID-19 Data Hub", Journal of Open Source Software 5(51):2376, \doi{10.21105/joss.02376}.
+#' 
+#' Guidotti, E., (2022), "A worldwide epidemiological database for COVID-19 at fine-grained spatial resolution", Sci Data 9(1):112, \doi{10.1038/s41597-022-01245-1}.
 #'
 #' @note 
 #' We have invested a lot of time and effort in creating \href{https://covid19datahub.io}{COVID-19 Data Hub}, please:
@@ -102,6 +104,9 @@ covid19 <- function(country = NULL,
                     verbose = TRUE,
                     ...){
 
+  oo <- options(timeout = 0)
+  on.exit(options(oo))
+  
   if(any(!level %in% 1:3))
     stop("'level' must be one of 1, 2, 3 or a combination of those.")
 
@@ -169,8 +174,9 @@ covid19 <- function(country = NULL,
     x <- apple(x, level = level, url = amr, dir = dir, verbose = verbose)
   
   if(verbose){
-    cat("We have invested a lot of time and effort in creating COVID-19 Data Hub, please cite the following when using it:\n")
-    print(utils::citation("COVID19"))
+    print(utils::citation("COVID19"), bibtex = FALSE)
+    cat("To print citations in BibTeX format use:\n")
+    cat(" > print(citation('COVID19'), bibtex=TRUE)\n\n")
     cat("To hide this message use 'verbose = FALSE'.\n")
   }
   

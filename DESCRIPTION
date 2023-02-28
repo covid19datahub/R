@@ -1,7 +1,7 @@
 Package: COVID19
 Type: Package
 Title: R Interface to COVID-19 Data Hub
-Version: 3.0.2
+Version: 3.0.3
 Authors@R: c(
     person(given = "Emanuele", family = "Guidotti", email = "emanuele.guidotti@unine.ch", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-8961-6623")),
     person(given = "David", family = "Ardia", role = c("ctb"), comment = c(ORCID = "0000-0003-2823-782X"))
@@ -17,4 +17,4 @@ BugReports: https://github.com/covid19datahub/COVID19/issues
 Encoding: UTF-8
 Imports: tools, utils, R.utils, data.table
 Suggests: RSQLite, wbstats (>= 1.0.0)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
